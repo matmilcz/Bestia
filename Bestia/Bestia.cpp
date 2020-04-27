@@ -1,5 +1,4 @@
-#include <SFML/Graphics.hpp>
-#include <iostream>
+﻿#include "Bestia.h"
 
 int main(int argc, char* argv[])
 {
