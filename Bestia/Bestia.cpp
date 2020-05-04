@@ -7,6 +7,7 @@ int main(int argc, char* argv[])
 #endif // _DEBUG
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bestia");
+    window.setVerticalSyncEnabled(true);
     sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
 
     sf::Texture beastTexture;
