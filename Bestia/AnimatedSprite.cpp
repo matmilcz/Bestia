@@ -27,7 +27,7 @@ void AnimatedSprite::update(const sf::Time& _frameTime)
 	if (m_frameTime >= m_frameUpdateTime)
 	{
 		moveToNextFrame();
-		m_frameTime = sf::seconds(0);
+		m_frameTime -= m_frameUpdateTime;
 	}
 }
 
