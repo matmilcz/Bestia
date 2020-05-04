@@ -10,6 +10,7 @@ int main(int argc, char* argv[])
     window.setVerticalSyncEnabled(true);
     sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
 
+    // TODO: would it be better if AnimatedSprite object was made only after entered inGame state?
     sf::Texture beastTexture;
     beastTexture.loadFromFile("../../../../Bestia/resources/spritesheets/white_monster.png"); // TODO: do sth with it
 
@@ -18,6 +19,18 @@ int main(int argc, char* argv[])
     AnimatedSprite beast(beastTexture, frameRect);
     beast.setScale(sf::Vector2f(5.0f, 5.0f));
 
+    // TODO: make nice looking menu
+    sf::Font font;
+    font.loadFromFile("../../../../Bestia/resources/fonts/calibri.ttf"); // TODO: do sth with it
+    
+    sf::Text menuMainText;
+    menuMainText.setString("MENU - click left mouse button see the beast");
+    menuMainText.setFont(font);
+    menuMainText.setFillColor(sf::Color::White);
+    menuMainText.setCharacterSize(18);
+
+    gameState = EGameState::inMenu;
+
     sf::Clock frameClock;
 
     while (window.isOpen())
@@ -25,23 +38,34 @@ int main(int argc, char* argv[])
         sf::Event event;
         while (window.pollEvent(event))
         {
-            switch (event.type)
+            switch (gameState)
             {
-            case sf::Event::Closed:
-                window.close();
+            case EGameState::inMenu:
+                handleInMenuEvents(event);
                 break;
-            case sf::Event::Resized:
-                resizeView(window, view);
-                view.setCenter(0.0f, 0.0f);
+            case EGameState::inGame:
+                handleInGameEvents(event);
                 break;
             }
+
+            handleCommonEvents(event, window, view);
         }
 
         beast.update(frameClock.restart());
 
         window.clear();
         window.setView(view);
-        window.draw(beast);
+
+        switch (gameState)
+        {
+        case EGameState::inMenu:
+            window.draw(menuMainText);
+            break;
+        case EGameState::inGame:
+            window.draw(beast);
+            break;
+        }
+        
         window.display();
     }
 
