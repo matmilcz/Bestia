@@ -18,8 +18,8 @@ constexpr float VIEW_HEIGHT = WINDOW_HEIGHT;
 
 enum class EGameState
 {
-	inMenu,
-	inGame
+	InMenu,
+	InGame
 };
 
 EGameState gameState;
@@ -52,7 +52,7 @@ inline void handleInMenuEvents(const sf::Event& event)
 #ifdef _DEBUG
         std::cout << "Clicked in Menu" << std::endl; // TODO: remove later, it's just for show now
 #endif // _DEBUG
-        gameState = EGameState::inGame;
+        gameState = EGameState::InGame;
         break;
     }
 }

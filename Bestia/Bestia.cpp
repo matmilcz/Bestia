@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
     window.setVerticalSyncEnabled(true);
     sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
 
-    // TODO: would it be better if AnimatedSprite object was made only after entered inGame state?
+    // TODO: would it be better if AnimatedSprite object was made only after entered InGame state?
     sf::Texture beastTexture;
     beastTexture.loadFromFile("../../../../Bestia/resources/spritesheets/white_monster.png"); // TODO: do sth with it
 
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
     menuMainText.setFillColor(sf::Color::White);
     menuMainText.setCharacterSize(18);
 
-    gameState = EGameState::inMenu;
+    gameState = EGameState::InMenu;
 
     sf::Clock frameClock;
 
@@ -40,10 +40,10 @@ int main(int argc, char* argv[])
         {
             switch (gameState)
             {
-            case EGameState::inMenu:
+            case EGameState::InMenu:
                 handleInMenuEvents(event);
                 break;
-            case EGameState::inGame:
+            case EGameState::InGame:
                 handleInGameEvents(event);
                 break;
             }
@@ -58,10 +58,10 @@ int main(int argc, char* argv[])
 
         switch (gameState)
         {
-        case EGameState::inMenu:
+        case EGameState::InMenu:
             window.draw(menuMainText);
             break;
-        case EGameState::inGame:
+        case EGameState::InGame:
             window.draw(beast);
             break;
         }
