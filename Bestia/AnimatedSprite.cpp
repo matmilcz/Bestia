@@ -1,4 +1,4 @@
-#include "AnimatedSprite.hpp"
+#include "AnimatedSprite.h"
 
 AnimatedSprite::AnimatedSprite(const sf::Texture& _spritesheet, 
 							   const std::vector<sf::IntRect>& _animationFrames, 

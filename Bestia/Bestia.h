@@ -6,7 +6,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "AnimatedSprite.hpp"
+#include "AnimatedSprite.h"
+#include "Menu/MenuOption.h"
 
 using uint = unsigned int;
 
@@ -44,7 +45,7 @@ inline void handleCommonEvents(const sf::Event& event, sf::RenderWindow& window,
     }
 }
 
-inline void handleInMenuEvents(const sf::Event& event)
+inline void handleInMenuEvents(const sf::Event& event, sf::RenderWindow& window)
 {
     switch (event.type)
     {

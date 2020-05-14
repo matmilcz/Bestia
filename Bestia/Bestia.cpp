@@ -23,11 +23,8 @@ int main(int argc, char* argv[])
     sf::Font font;
     font.loadFromFile("../../../../Bestia/resources/fonts/calibri.ttf"); // TODO: do sth with it
     
-    sf::Text menuMainText;
-    menuMainText.setString("MENU - click left mouse button see the beast");
-    menuMainText.setFont(font);
+    Bestia::MenuOption menuMainText("MENU", font, 20);
     menuMainText.setFillColor(sf::Color::White);
-    menuMainText.setCharacterSize(18);
 
     gameState = EGameState::InMenu;
 
@@ -41,7 +38,7 @@ int main(int argc, char* argv[])
             switch (gameState)
             {
             case EGameState::InMenu:
-                handleInMenuEvents(event);
+                handleInMenuEvents(event, window);
                 break;
             case EGameState::InGame:
                 handleInGameEvents(event);
