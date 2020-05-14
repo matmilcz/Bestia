@@ -7,7 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "AnimatedSprite.h"
-#include "Menu/MenuOption.h"
+#include "Menu/Menu.h"
 
 using uint = unsigned int;
 
@@ -16,12 +16,6 @@ constexpr uint WINDOW_HEIGHT = 600;
 
 constexpr float VIEW_WIDTH = WINDOW_WIDTH;
 constexpr float VIEW_HEIGHT = WINDOW_HEIGHT;
-
-enum class EGameState
-{
-	InMenu,
-	InGame
-};
 
 EGameState gameState;
 
@@ -45,17 +39,19 @@ inline void handleCommonEvents(const sf::Event& event, sf::RenderWindow& window,
     }
 }
 
-inline void handleInMenuEvents(const sf::Event& event, sf::RenderWindow& window)
+inline void handleInMenuEvents(Bestia::Menu& menu, const sf::Event& event, sf::RenderWindow& window)
 {
-    switch (event.type)
-    {
-    case sf::Event::MouseButtonPressed:
-#ifdef _DEBUG
-        std::cout << "Clicked in Menu" << std::endl; // TODO: remove later, it's just for show now
-#endif // _DEBUG
-        gameState = EGameState::InGame;
-        break;
-    }
+    menu.handleMouseEvents(event, window);
+
+//    switch (event.type)
+//    {
+//    case sf::Event::MouseButtonPressed:
+//#ifdef _DEBUG
+//        std::cout << "Clicked in Menu" << std::endl; // TODO: remove later, it's just for show now
+//#endif // _DEBUG
+//        gameState = EGameState::InGame;
+//        break;
+//    }
 }
 
 inline void handleInGameEvents(const sf::Event& event)
