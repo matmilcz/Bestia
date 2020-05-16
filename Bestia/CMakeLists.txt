@@ -11,7 +11,13 @@ set(SFML_DIR "../SFML-2.5.1/lib/cmake/SFML")
 find_package(SFML 2.5 COMPONENTS graphics window audio system REQUIRED)
 
 # Add source to this project's executable.
-file(GLOB SRCFILES *.cpp Menu/*.cpp)
-file(GLOB INCFILES *.h Menu/*.h)
+file(GLOB SRCFILES 
+	*.cpp 
+	Menu/*.cpp
+	Utils/*.cpp)
+file(GLOB INCFILES 
+	*.h 
+	Menu/*.h
+	Utils/*.h)
 add_executable (Bestia ${SRCFILES} ${INCFILES})
 target_link_libraries(Bestia sfml-main sfml-graphics sfml-window sfml-audio sfml-system)

@@ -6,9 +6,9 @@ int main(int argc, char* argv[])
     std::cout << "Here you can log things that will not appear in release mode:" << '\n';
 #endif // _DEBUG
 
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bestia");
+    sf::RenderWindow window(sf::VideoMode(Bestia::WINDOW_WIDTH, Bestia::WINDOW_HEIGHT), "Bestia");
     window.setVerticalSyncEnabled(true);
-    sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
+    sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(Bestia::VIEW_WIDTH, Bestia::VIEW_HEIGHT));
 
     // TODO: would it be better if AnimatedSprite object was made only after entered InGame state?
     sf::Texture beastTexture;
@@ -19,52 +19,38 @@ int main(int argc, char* argv[])
     AnimatedSprite beast(beastTexture, frameRect);
     beast.setScale(sf::Vector2f(5.0f, 5.0f));
 
-    // TODO: make nice looking menu
     sf::Font font;
     font.loadFromFile("../../../../Bestia/resources/fonts/calibri.ttf"); // TODO: do sth with it
-    
-    Bestia::Menu mainMenu{ {"NEW GAME", font, 30},
-                           {"CREDITS", font, 30},
-                           {"EXIT", font, 30} };
 
-    gameState = EGameState::InMenu;
+    Bestia::EGameState gameState = Bestia::EGameState::InMenu;
 
     sf::Clock frameClock;
 
     while (window.isOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            switch (gameState)
-            {
-            case EGameState::InMenu:
-                handleInMenuEvents(mainMenu, event, window);
-                break;
-            case EGameState::InGame:
-                handleInGameEvents(event);
-                break;
-            }
-
-            handleCommonEvents(event, window, view);
-        }
-
-        beast.update(frameClock.restart());
-
-        window.clear();
-        window.setView(view);
-
         switch (gameState)
         {
-        case EGameState::InMenu:
-            window.draw(mainMenu);
+        case Bestia::EGameState::InMenu:
+            {
+                std::unique_ptr <Bestia::MainMenu> mainMenu{ new Bestia::MainMenu(window, gameState, font) };
+                mainMenu->loop();
+            }
             break;
-        case EGameState::InGame:
+        case Bestia::EGameState::InGame: // TODO: make a class to handle this state
+            sf::Event event;
+
+            while (window.pollEvent(event))
+            {
+                Bestia::handleCommonEvent(event, window, view);
+            }
+            beast.update(frameClock.restart());
+
+            window.clear();
+            window.setView(view);
             window.draw(beast);
+            window.display();
             break;
         }
-        
-        window.display();
     }
 
     return 0;

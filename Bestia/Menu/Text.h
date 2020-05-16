@@ -8,17 +8,13 @@ namespace Bestia {
 
 	using uint = unsigned int;
 
-	class MenuOption : public sf::Text
+	class Text : public sf::Text
 	{
 	public:
-		MenuOption(const sf::String& string, const sf::Font& font, uint characterSize = 30)
-			: sf::Text{ string, font, characterSize }
-		{
-		}
-
-		~MenuOption()
-		{
-		}
+		Text(const sf::String& string, const sf::Font& font, const uint& characterSize);
+		Text(const Text&) = default;
+		~Text();
+		Text& operator= (const Text&) = default;
 
 		bool isMouseOver(const sf::RenderWindow& window) const;
 
