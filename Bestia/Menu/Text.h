@@ -13,7 +13,7 @@ namespace Bestia {
 	public:
 		Text(const sf::String& string, const sf::Font& font, const uint& characterSize);
 		Text(const Text&) = default;
-		~Text();
+		~Text() = default;
 		Text& operator= (const Text&) = default;
 
 		bool isMouseOver(const sf::RenderWindow& window) const;

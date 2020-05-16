@@ -7,10 +7,6 @@ namespace Bestia {
 	{
 	}
 
-	Text::~Text()
-	{
-	}
-
 	bool Text::isMouseOver(const sf::RenderWindow& window) const
 	{
 		auto mousePixelPos = sf::Mouse::getPosition(window);
