@@ -38,6 +38,10 @@ int main(int argc, char* argv[])
 
             while (window.pollEvent(event))
             {
+                if (sf::Event::KeyPressed == event.type && sf::Keyboard::Escape == event.key.code)
+                {
+                    gameState = bestia::EGameState::InMenu;
+                }
                 bestia::handleCommonEvent(event, window, view);
             }
             beast.update(frameClock.restart());
