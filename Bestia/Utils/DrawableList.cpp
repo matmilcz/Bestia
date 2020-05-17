@@ -26,12 +26,35 @@ namespace bestia {
 		}
 	}
 
+	void DrawableList::add(const sf::String& string)
+	{
+		add({ string, m_font, m_size });
+		m_list.back().setColor(m_color);
+	}
+
 	void DrawableList::setColor(const sf::Color& color)
 	{
+		m_color = color;
+
 		for (auto& it_list : m_list)
 		{
-			it_list.setColor(color);
+			it_list.setColor(m_color);
 		}
+	}
+
+	void DrawableList::setFont(const sf::Font& font)
+	{
+		m_font = font;
+
+		for (auto& it_list : m_list)
+		{
+			it_list.setFont(m_font);
+		}
+	}
+
+	void DrawableList::setSize(const uint& size)
+	{
+		m_size = size;
 	}
 
 	void DrawableList::setInterline(const uint& interline)

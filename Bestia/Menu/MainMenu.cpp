@@ -7,11 +7,11 @@ namespace bestia {
 	{
 		m_font.loadFromFile("Resources/fonts/calibri.ttf");
 
-		m_mainList.add({ "NEW GAME", m_font, 30 });
-		m_mainList.add({ "CREDITS", m_font, 30 });
-		m_mainList.add({ "EXIT", m_font, 30 });
-
+		m_mainList.setFont(m_font);
 		m_mainList.setColor(sf::Color::Black);
+		m_mainList.add("NEW GAME");
+		m_mainList.add("CREDITS");
+		m_mainList.add("EXIT");
 
 		m_backgroundTexture.loadFromFile("Resources/textures/back_900x600.jpg");
 		m_backgroundSprite.setTexture(m_backgroundTexture);
@@ -71,7 +71,6 @@ namespace bestia {
 					std::cout << "Credits: Mlody i Zosia\n"
 							  << "Attrribution: \n"
 							  << "Background photo created by freepik - www.freepik.com\n";
-							  //<< "Frame vector created by vectorpocket - www.freepik.com\n";
 #endif // _DEBUG
 				}
 				else if ("EXIT" == it_list.getString())
