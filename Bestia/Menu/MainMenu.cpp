@@ -12,6 +12,7 @@ namespace bestia {
 		m_mainList.setColor(sf::Color::Black);
 		m_mainList.setSize(fontSize);
 		m_mainList.add("NEW GAME");
+		m_mainList.add("OPTIONS");
 		m_mainList.add("HOW TO PLAY");
 		m_mainList.add("CREDITS");
 		m_mainList.add("EXIT");

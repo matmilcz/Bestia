@@ -6,7 +6,14 @@ int main(int argc, char* argv[])
     std::cout << "Here you can log things that will not appear in release mode:" << '\n';
 #endif // _DEBUG
 
-    sf::RenderWindow window(sf::VideoMode(bestia::WINDOW_WIDTH, bestia::WINDOW_HEIGHT), "Bestia");
+    sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+
+#ifdef _DEBUG
+    sf::RenderWindow window(desktopMode, "Bestia"); // TODO: change hardcoded view size
+#else
+    sf::RenderWindow window(desktopMode, "Bestia", sf::Style::Fullscreen);
+#endif // _DEBUG
+
     window.setVerticalSyncEnabled(true);
     sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(bestia::VIEW_WIDTH, bestia::VIEW_HEIGHT));
 
