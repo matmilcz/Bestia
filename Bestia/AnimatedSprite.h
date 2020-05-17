@@ -9,7 +9,7 @@ public:
 	AnimatedSprite(const sf::Texture& _spritesheet, 
 				   const std::vector<sf::IntRect>& _animationFrames,
 				   const sf::Time& _frameUpdateTime = sf::seconds(0.5f));
-	~AnimatedSprite();
+	~AnimatedSprite() = default;
 	AnimatedSprite(const AnimatedSprite&) = delete;
 	AnimatedSprite(AnimatedSprite&&) = delete;
 	AnimatedSprite& operator=(const AnimatedSprite&) = delete;

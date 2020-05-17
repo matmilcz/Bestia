@@ -10,11 +10,6 @@ AnimatedSprite::AnimatedSprite(const sf::Texture& _spritesheet,
 	setTextureRect(m_animationFrames->front());
 }
 
-AnimatedSprite::~AnimatedSprite()
-{
-
-}
-
 void AnimatedSprite::setAnimationFrames(const std::vector<sf::IntRect>& _animationFrames)
 {
 	m_animationFrames = &_animationFrames;
