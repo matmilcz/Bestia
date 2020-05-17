@@ -4,7 +4,7 @@
 #include "DrawableList.h"
 #include "../Utils/CommonFcn.h"
 
-namespace Bestia {
+namespace bestia {
 
 	class MainMenu
 	{

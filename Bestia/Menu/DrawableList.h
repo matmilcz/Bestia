@@ -10,7 +10,7 @@
 #include <SFML/Window/Event.hpp>
 #include "Text.h"
 
-namespace Bestia {
+namespace bestia {
 
 	using uint = unsigned int;
 

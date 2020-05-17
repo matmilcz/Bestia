@@ -1,6 +1,6 @@
 #include "MainMenu.h"
 
-namespace Bestia {
+namespace bestia {
 
 	MainMenu::MainMenu(sf::RenderWindow& window, EGameState& gameState, const sf::Font& font)
 		: m_window(window), m_gameState(gameState)

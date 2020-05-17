@@ -6,9 +6,9 @@ int main(int argc, char* argv[])
     std::cout << "Here you can log things that will not appear in release mode:" << '\n';
 #endif // _DEBUG
 
-    sf::RenderWindow window(sf::VideoMode(Bestia::WINDOW_WIDTH, Bestia::WINDOW_HEIGHT), "Bestia");
+    sf::RenderWindow window(sf::VideoMode(bestia::WINDOW_WIDTH, bestia::WINDOW_HEIGHT), "Bestia");
     window.setVerticalSyncEnabled(true);
-    sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(Bestia::VIEW_WIDTH, Bestia::VIEW_HEIGHT));
+    sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(bestia::VIEW_WIDTH, bestia::VIEW_HEIGHT));
 
     // TODO: would it be better if AnimatedSprite object was made only after entered InGame state?
     sf::Texture beastTexture;
@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     sf::Font font;
     font.loadFromFile("../../../../Bestia/resources/fonts/calibri.ttf"); // TODO: do sth with it
 
-    Bestia::EGameState gameState = Bestia::EGameState::InMenu;
+    bestia::EGameState gameState = bestia::EGameState::InMenu;
 
     sf::Clock frameClock;
 
@@ -30,18 +30,18 @@ int main(int argc, char* argv[])
     {
         switch (gameState)
         {
-        case Bestia::EGameState::InMenu:
+        case bestia::EGameState::InMenu:
             {
-                std::unique_ptr <Bestia::MainMenu> mainMenu{ new Bestia::MainMenu(window, gameState, font) };
+                std::unique_ptr <bestia::MainMenu> mainMenu{ new bestia::MainMenu(window, gameState, font) };
                 mainMenu->loop();
             }
             break;
-        case Bestia::EGameState::InGame: // TODO: make a class to handle this state
+        case bestia::EGameState::InGame: // TODO: make a class to handle this state
             sf::Event event;
 
             while (window.pollEvent(event))
             {
-                Bestia::handleCommonEvent(event, window, view);
+                bestia::handleCommonEvent(event, window, view);
             }
             beast.update(frameClock.restart());
 

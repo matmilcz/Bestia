@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Defs.h"
 
-namespace Bestia {
+namespace bestia {
 
     inline void resizeView(const sf::Window& window, sf::View& view)
     {

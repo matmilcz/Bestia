@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Bestia {
+namespace bestia {
 
 	using uint = unsigned int;
 

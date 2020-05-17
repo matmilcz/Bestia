@@ -1,6 +1,6 @@
 #include "Text.h"
 
-namespace Bestia {
+namespace bestia {
 
 	Text::Text(const sf::String& string, const sf::Font& font, const uint& characterSize = 30)
 		: sf::Text{ string, font, characterSize }

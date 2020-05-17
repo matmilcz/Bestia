@@ -1,6 +1,6 @@
 #include "DrawableList.h"
 
-namespace Bestia {
+namespace bestia {
 
 	DrawableList::DrawableList(std::initializer_list<Text> list) : m_list(list)
 	{
