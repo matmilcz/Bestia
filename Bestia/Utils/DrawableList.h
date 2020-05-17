@@ -31,7 +31,7 @@ namespace bestia {
 		void setFont(const sf::Font& font);
 		void setSize(const uint& size);
 		void setInterline(const uint& interline);
-		void setPosition(const sf::Vector2f& desiredPos);
+		void setPosition(const sf::Vector2f& desiredPos); // TODO: currently needs to be called after list initialization
 
 		std::vector <Text>::iterator begin();
 		std::vector <Text>::iterator end();

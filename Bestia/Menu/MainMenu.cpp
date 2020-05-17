@@ -7,11 +7,15 @@ namespace bestia {
 	{
 		m_font.loadFromFile("Resources/fonts/calibri.ttf");
 
+		constexpr uint fontSize = 40;
 		m_mainList.setFont(m_font);
 		m_mainList.setColor(sf::Color::Black);
+		m_mainList.setSize(fontSize);
 		m_mainList.add("NEW GAME");
+		m_mainList.add("HOW TO PLAY");
 		m_mainList.add("CREDITS");
 		m_mainList.add("EXIT");
+		m_mainList.setPosition(sf::Vector2f{ 0.f, -100.f });
 
 		m_backgroundTexture.loadFromFile("Resources/textures/back_900x600.jpg");
 		m_backgroundSprite.setTexture(m_backgroundTexture);

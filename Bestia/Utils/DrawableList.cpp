@@ -55,6 +55,11 @@ namespace bestia {
 	void DrawableList::setSize(const uint& size)
 	{
 		m_size = size;
+
+		for (auto& it_list : m_list)
+		{
+			it_list.setCharacterSize(m_size);
+		}
 	}
 
 	void DrawableList::setInterline(const uint& interline)
