@@ -25,5 +25,7 @@ file(GLOB INCFILES
 add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES})
 target_link_libraries(${EXEC_NAME} sfml-main sfml-graphics sfml-window sfml-audio sfml-system)
 
+target_include_directories(${EXEC_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
 # Copy Resources to binary directory
 file(COPY "Resources" DESTINATION "${CMAKE_BINARY_DIR}/${EXEC_NAME}")

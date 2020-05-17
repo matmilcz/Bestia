@@ -19,9 +19,6 @@ int main(int argc, char* argv[])
     AnimatedSprite beast(beastTexture, frameRect);
     beast.setScale(sf::Vector2f(5.0f, 5.0f));
 
-    sf::Font font;
-    font.loadFromFile("Resources/fonts/calibri.ttf");
-
     bestia::EGameState gameState = bestia::EGameState::InMenu;
 
     sf::Clock frameClock;
@@ -32,7 +29,7 @@ int main(int argc, char* argv[])
         {
         case bestia::EGameState::InMenu:
             {
-                std::unique_ptr <bestia::MainMenu> mainMenu{ new bestia::MainMenu(window, gameState, font) };
+                std::unique_ptr <bestia::MainMenu> mainMenu{ new bestia::MainMenu(window, gameState) };
                 mainMenu->loop();
             }
             break;

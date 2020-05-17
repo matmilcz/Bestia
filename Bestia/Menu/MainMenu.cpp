@@ -2,12 +2,20 @@
 
 namespace bestia {
 
-	MainMenu::MainMenu(sf::RenderWindow& window, EGameState& gameState, const sf::Font& font)
+	MainMenu::MainMenu(sf::RenderWindow& window, EGameState& gameState)
 		: m_window(window), m_gameState(gameState)
 	{
-		m_mainList.add({ "NEW GAME", font, 30 });
-		m_mainList.add({ "CREDITS", font, 30 });
-		m_mainList.add({ "EXIT", font, 30 });
+		m_font.loadFromFile("Resources/fonts/calibri.ttf");
+
+		m_mainList.add({ "NEW GAME", m_font, 30 });
+		m_mainList.add({ "CREDITS", m_font, 30 });
+		m_mainList.add({ "EXIT", m_font, 30 });
+
+		m_mainList.setColor(sf::Color::Black);
+
+		m_backgroundTexture.loadFromFile("Resources/textures/back_900x600.jpg");
+		m_backgroundSprite.setTexture(m_backgroundTexture);
+		m_backgroundSprite.setPosition(-500.f, -300.f);
 	}
 
 	void MainMenu::loop()
@@ -24,6 +32,7 @@ namespace bestia {
 			m_window.clear();
 			m_window.setView(m_view);
 
+			m_window.draw(m_backgroundSprite);
 			m_window.draw(m_mainList);
 
 			m_window.display();
@@ -59,7 +68,10 @@ namespace bestia {
 				else if ("CREDITS" == it_list.getString())
 				{
 #ifdef _DEBUG
-					std::cout << "Credits: Mlody i Zosia" << '\n';
+					std::cout << "Credits: Mlody i Zosia\n"
+							  << "Attrribution: \n"
+							  << "Background photo created by freepik - www.freepik.com\n";
+							  //<< "Frame vector created by vectorpocket - www.freepik.com\n";
 #endif // _DEBUG
 				}
 				else if ("EXIT" == it_list.getString())
