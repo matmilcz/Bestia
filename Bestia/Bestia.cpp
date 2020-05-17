@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 
     // TODO: would it be better if AnimatedSprite object was made only after entered InGame state?
     sf::Texture beastTexture;
-    beastTexture.loadFromFile("../../../../Bestia/Resources/spritesheets/white_monster.png"); // TODO: do sth with it
+    beastTexture.loadFromFile("Resources/spritesheets/white_monster.png");
 
     const std::vector <sf::IntRect> frameRect = { {0, 0, 50, 50}, {50, 0, 50, 50} };
 
@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
     beast.setScale(sf::Vector2f(5.0f, 5.0f));
 
     sf::Font font;
-    font.loadFromFile("../../../../Bestia/Resources/fonts/calibri.ttf"); // TODO: do sth with it
+    font.loadFromFile("Resources/fonts/calibri.ttf");
 
     bestia::EGameState gameState = bestia::EGameState::InMenu;
 

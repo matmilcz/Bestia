@@ -3,6 +3,8 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
+set(EXEC_NAME "Bestia")
+
 # Link SFML statically
 set(SFML_STATIC_LIBRARIES TRUE)
 
@@ -19,5 +21,9 @@ file(GLOB INCFILES
 	*.h 
 	Menu/*.h
 	Utils/*.h)
-add_executable (Bestia ${SRCFILES} ${INCFILES})
-target_link_libraries(Bestia sfml-main sfml-graphics sfml-window sfml-audio sfml-system)
+
+add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES})
+target_link_libraries(${EXEC_NAME} sfml-main sfml-graphics sfml-window sfml-audio sfml-system)
+
+# Copy Resources to binary directory
+file(COPY "Resources" DESTINATION "${CMAKE_BINARY_DIR}/${EXEC_NAME}")
