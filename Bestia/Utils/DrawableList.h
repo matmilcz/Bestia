@@ -1,9 +1,5 @@
 #pragma once
 
-#ifdef _DEBUG
-#include <iostream>
-#endif // _DEBUG
-
 #include <vector>
 #include <initializer_list>
 #include <SFML/Graphics/Drawable.hpp>

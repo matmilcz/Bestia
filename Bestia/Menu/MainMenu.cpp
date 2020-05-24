@@ -72,11 +72,9 @@ namespace bestia {
 				}
 				else if ("CREDITS" == it_list.getString())
 				{
-#ifdef _DEBUG
-					std::cout << "Credits: Mlody i Zosia\n"
-							  << "Attrribution: \n"
-							  << "Background photo created by freepik - www.freepik.com\n";
-#endif // _DEBUG
+					LOG("Credits: Mlody i Zosia\n" <<
+						"Attrribution: \n" <<
+						"Background photo created by freepik - www.freepik.com\n");
 				}
 				else if ("EXIT" == it_list.getString())
 				{

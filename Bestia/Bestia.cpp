@@ -2,9 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-#ifdef _DEBUG
-    std::cout << "Here you can log things that will not appear in release mode:" << '\n';
-#endif // _DEBUG
+    LOG("Here you can log things that will not appear in release mode:" << '\n');
 
     sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 

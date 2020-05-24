@@ -3,6 +3,7 @@
 #include <SFML/Graphics/View.hpp>
 #include "Utils/DrawableList.h"
 #include "Utils/CommonFcn.h"
+#include "Utils/Log.h"
 
 namespace bestia {
 
