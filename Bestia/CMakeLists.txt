@@ -16,15 +16,18 @@ find_package(SFML 2.5 COMPONENTS graphics window audio system REQUIRED)
 file(GLOB SRCFILES 
 	*.cpp 
 	Menu/*.cpp
-	EventSystem/*cpp
+	EventSystem/*.cpp
+	Brain/*.cpp
 	Utils/*.cpp)
+
 file(GLOB INCFILES 
 	*.h 
 	Menu/*.h
-	EventSystem/*h
+	EventSystem/*.h
+	Brain/*.h
 	Utils/*.h)
 
-add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES} "Brain/Brain.h" "Brain/IFood.h")
+add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES})
 target_link_libraries(${EXEC_NAME} sfml-main sfml-graphics sfml-window sfml-audio sfml-system)
 
 target_include_directories(${EXEC_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
