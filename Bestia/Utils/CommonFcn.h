@@ -11,18 +11,4 @@ namespace bestia {
         view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
     }
 
-    inline void handleCommonEvent(const sf::Event& event, sf::RenderWindow& window, sf::View& view)
-    {
-        switch (event.type)
-        {
-        case sf::Event::Closed:
-            window.close();
-            break;
-        case sf::Event::Resized:
-            resizeView(window, view);
-            view.setCenter(0.0f, 0.0f);
-            break;
-        }
-    }
-
 }

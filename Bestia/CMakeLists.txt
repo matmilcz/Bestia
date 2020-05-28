@@ -16,10 +16,12 @@ find_package(SFML 2.5 COMPONENTS graphics window audio system REQUIRED)
 file(GLOB SRCFILES 
 	*.cpp 
 	Menu/*.cpp
+	EventSystem/*cpp
 	Utils/*.cpp)
 file(GLOB INCFILES 
 	*.h 
 	Menu/*.h
+	EventSystem/*h
 	Utils/*.h)
 
 add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES} "Brain/Brain.h" "Brain/IFood.h")

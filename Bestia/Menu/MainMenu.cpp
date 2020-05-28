@@ -21,43 +21,23 @@ namespace bestia {
 		m_backgroundTexture.loadFromFile("Resources/textures/back_900x600.jpg");
 		m_backgroundSprite.setTexture(m_backgroundTexture);
 		m_backgroundSprite.setPosition(-500.f, -300.f);
+
+		setEventDispatcher();
 	}
 
 	void MainMenu::loop()
 	{
-		sf::Event event;
-
-		while (EGameState::InMenu == m_gameState && m_window.isOpen())
-		{
-			while (m_window.pollEvent(event))
-			{
-				handleEvent(event);
-			}
-
-			m_window.clear();
-			m_window.setView(m_view);
-
-			m_window.draw(m_backgroundSprite);
-			m_window.draw(m_mainList);
-
-			m_window.display();
-		}
+		m_window.setView(m_view);
+		m_window.draw(m_backgroundSprite);
+		m_window.draw(m_mainList);
 	}
 
-	void MainMenu::handleEvent(const sf::Event& event)
+	void MainMenu::setEventDispatcher()
 	{
-		switch (event.type)
-		{
-		case sf::Event::MouseButtonPressed:
-			handleMouseButtonPressedEvent();
-			break;
-		case sf::Event::MouseMoved:
-			handleMouseMovedEvent();
-			break;
-		default:
-			handleCommonEvent(event, m_window, m_view);
-			break;
-		}
+		using namespace sf;
+		using namespace event;
+		EventDispatcher<Event::MouseButtonPressed>::setDispatcher(std::bind(&MainMenu::handleMouseButtonPressedEvent, this));
+		EventDispatcher<Event::MouseMoved>::setDispatcher(std::bind(&MainMenu::handleMouseMovedEvent, this));
 	}
 
 	void MainMenu::handleMouseButtonPressedEvent()
@@ -99,7 +79,6 @@ namespace bestia {
 			}
 		}
 	}
-
 
 }
 

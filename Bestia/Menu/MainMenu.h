@@ -4,6 +4,7 @@
 #include "Utils/DrawableList.h"
 #include "Utils/CommonFcn.h"
 #include "Utils/Log.h"
+#include "EventSystem/EventDispatcher.h"
 
 namespace bestia {
 
@@ -16,6 +17,7 @@ namespace bestia {
 		MainMenu& operator= (const MainMenu&) = delete;
 
 		void loop();
+		void setEventDispatcher();
 
 	private:
 		DrawableList m_mainList;
@@ -28,7 +30,6 @@ namespace bestia {
 		sf::Texture m_backgroundTexture;
 		sf::Sprite m_backgroundSprite;
 
-		void handleEvent(const sf::Event& event);
 		void handleMouseButtonPressedEvent();
 		void handleMouseMovedEvent();
 	};
