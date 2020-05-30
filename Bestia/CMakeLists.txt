@@ -18,14 +18,18 @@ file(GLOB SRCFILES
 	Menu/*.cpp
 	EventSystem/*.cpp
 	Brain/*.cpp
-	Utils/*.cpp)
+	Utils/*.cpp
+	Gui/*.cpp
+	ExtendedSFML/*.cpp)
 
 file(GLOB INCFILES 
 	*.h 
 	Menu/*.h
 	EventSystem/*.h
 	Brain/*.h
-	Utils/*.h)
+	Utils/*.h
+	Gui/*.h
+	ExtendedSFML/*.h)
 
 add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES})
 target_link_libraries(${EXEC_NAME} sfml-main sfml-graphics sfml-window sfml-audio sfml-system)
