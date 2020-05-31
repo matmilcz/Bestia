@@ -26,7 +26,7 @@ namespace gui {
 	class Button : public sf::Drawable
 	{
 	public:
-		Button() = default; // TODO: more c-tors
+		Button() = default;
 		~Button() = default;
 
 		void setString(const sf::String& string);
@@ -42,9 +42,14 @@ namespace gui {
 		void setPosition(const sf::Vector2f& position);
 		void setAligment(const EVerticalAlignment& vAlign, const EHorizontalAlignment& hAlign);
 
+		const sf::Vector2f& getSize() const;
+		const sf::Vector2f& getPosition() const;
+
 	private:
 		sf::Text m_string;
 		sf::extended::RoundedRectangleShape m_roundedRectangle{ sf::Vector2f{50, 30}, 5, 5 };
+		EVerticalAlignment m_vAlign = EVerticalAlignment::Center;	// TODO: keep alignment in one variable
+		EHorizontalAlignment m_hAlign = EHorizontalAlignment::Center;
 
 		void setVerticalAlignment(const EVerticalAlignment& vAlign);
 		void setHorizontalAlignment(const EHorizontalAlignment& hAlign);

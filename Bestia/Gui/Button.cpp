@@ -6,16 +6,19 @@ namespace gui {
 	void Button::setString(const sf::String& string)
 	{
 		m_string.setString(string);
+		setAligment(m_vAlign, m_hAlign);
 	}
 
 	void Button::setFont(const sf::Font& font)
 	{
 		m_string.setFont(font);
+		setAligment(m_vAlign, m_hAlign);
 	}
 
 	void Button::setCharacterSize(uint size)
 	{
 		m_string.setCharacterSize(size);
+		setAligment(m_vAlign, m_hAlign);
 	}
 
 	void Button::setStringColor(const sf::Color& color)
@@ -26,6 +29,7 @@ namespace gui {
 	void Button::setSize(const sf::Vector2f& size)
 	{
 		m_roundedRectangle.setSize(size);
+		setAligment(m_vAlign, m_hAlign);
 	}
 
 	void Button::setCornersRadius(float radius)
@@ -46,13 +50,23 @@ namespace gui {
 	void Button::setPosition(const sf::Vector2f& position)
 	{
 		m_roundedRectangle.setPosition(position);
-		setAligment(EVerticalAlignment::Center, EHorizontalAlignment::Center);
+		setAligment(m_vAlign, m_hAlign);
 	}
 
 	void Button::setAligment(const EVerticalAlignment& vAlign, const EHorizontalAlignment& hAlign)
 	{
 		setVerticalAlignment(vAlign);
 		setHorizontalAlignment(hAlign);
+	}
+
+	const sf::Vector2f& Button::getSize() const
+	{
+		return m_roundedRectangle.getSize();
+	}
+
+	const sf::Vector2f& Button::getPosition() const
+	{
+		return m_roundedRectangle.getPosition();
 	}
 
 	void Button::setVerticalAlignment(const EVerticalAlignment& vAlign)
