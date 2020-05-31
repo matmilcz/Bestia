@@ -59,6 +59,11 @@ namespace gui {
 		setHorizontalAlignment(hAlign);
 	}
 
+	const sf::String& Button::getString() const
+	{
+		return m_string.getString();
+	}
+
 	const sf::Vector2f& Button::getSize() const
 	{
 		return m_roundedRectangle.getSize();
@@ -67,6 +72,14 @@ namespace gui {
 	const sf::Vector2f& Button::getPosition() const
 	{
 		return m_roundedRectangle.getPosition();
+	}
+
+	bool Button::isMouseOver(const sf::RenderWindow& window) const
+	{
+		auto mousePixelPos = sf::Mouse::getPosition(window);
+		auto mouseCoordPos = window.mapPixelToCoords(mousePixelPos);
+
+		return m_roundedRectangle.getGlobalBounds().contains(mouseCoordPos.x, mouseCoordPos.y);
 	}
 
 	void Button::setVerticalAlignment(const EVerticalAlignment& vAlign)

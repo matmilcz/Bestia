@@ -1,7 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics/View.hpp>
-#include "Utils/DrawableList.h"
+#include "Gui/DrawableList.h"
+#include "Gui/Button.h"
 #include "Utils/CommonFcn.h"
 #include "Utils/Log.h"
 #include "EventSystem/EventDispatcher.h"
@@ -20,15 +21,13 @@ namespace bestia {
 		void setEventDispatcher();
 
 	private:
-		DrawableList m_mainList;
+		gui::DrawableList<gui::Button> m_mainList;
 
 		sf::RenderWindow& m_window;
 		EGameState& m_gameState;
 		sf::View m_view{ sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT) };
 
 		sf::Font m_font;
-		sf::Texture m_backgroundTexture;
-		sf::Sprite m_backgroundSprite;
 
 		void handleMouseButtonPressedEvent();
 		void handleMouseMovedEvent();

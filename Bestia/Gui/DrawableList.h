@@ -21,6 +21,11 @@ namespace gui {
 
 		TDrawableItem& operator[] (uint idx);
 
+		auto begin();
+		auto end();
+		const auto begin() const;
+		const auto end() const;
+
 		void setPosition(const sf::Vector2f& position);
 		void setSpacing(const sf::Vector2f& spacing);
 
@@ -39,6 +44,30 @@ namespace gui {
 	TDrawableItem& DrawableList<TDrawableItem>::operator[] (uint idx)
 	{
 		return m_list[idx];
+	}
+
+	template<typename TDrawableItem>
+	auto DrawableList<TDrawableItem>::begin()
+	{
+		return m_list.begin();
+	}
+
+	template<typename TDrawableItem>
+	auto DrawableList<TDrawableItem>::end()
+	{
+		return m_list.end();
+	}
+
+	template<typename TDrawableItem>
+	const auto DrawableList<TDrawableItem>::begin() const
+	{
+		return m_list.begin();
+	}
+
+	template<typename TDrawableItem>
+	const auto DrawableList<TDrawableItem>::end() const
+	{
+		return m_list.end();
 	}
 
 	template<typename TDrawableItem>

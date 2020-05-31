@@ -42,8 +42,11 @@ namespace gui {
 		void setPosition(const sf::Vector2f& position);
 		void setAligment(const EVerticalAlignment& vAlign, const EHorizontalAlignment& hAlign);
 
+		const sf::String& getString() const;
 		const sf::Vector2f& getSize() const;
 		const sf::Vector2f& getPosition() const;
+
+		bool isMouseOver(const sf::RenderWindow& window) const;
 
 	private:
 		sf::Text m_string;

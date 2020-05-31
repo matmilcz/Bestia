@@ -7,20 +7,26 @@ namespace bestia {
 	{
 		m_font.loadFromFile("Resources/fonts/calibri.ttf");
 
-		constexpr uint fontSize = 40;
-		m_mainList.setFont(m_font);
-		m_mainList.setColor(sf::Color::Black);
-		m_mainList.setSize(fontSize);
-		m_mainList.add("NEW GAME");
-		m_mainList.add("OPTIONS");
-		m_mainList.add("HOW TO PLAY");
-		m_mainList.add("CREDITS");
-		m_mainList.add("EXIT");
-		m_mainList.setPosition(sf::Vector2f{ 0.f, -100.f });
+		gui::Button tempButton;
+		constexpr uint length = 5;
+		constexpr uint fontSize = 30;
+		for (auto i = 0; i < length; ++i)
+		{
+			m_mainList.add(tempButton);
+			m_mainList[i].setFont(m_font);
+			m_mainList[i].setStringColor(sf::Color::Black);
+			m_mainList[i].setCharacterSize(fontSize);
+			m_mainList[i].setSize(sf::Vector2f{ 250.f, 70.f });
+		}
 
-		m_backgroundTexture.loadFromFile("Resources/textures/back_900x600.jpg");
-		m_backgroundSprite.setTexture(m_backgroundTexture);
-		m_backgroundSprite.setPosition(-500.f, -300.f);
+		m_mainList[0].setString("NEW GAME");
+		m_mainList[1].setString("OPTIONS");
+		m_mainList[2].setString("HOW TO PLAY");
+		m_mainList[3].setString("CREDITS");
+		m_mainList[4].setString("EXIT");
+		
+		m_mainList.setPosition(sf::Vector2f{ -125.f, -200.f });
+		m_mainList.setSpacing(sf::Vector2f{ 0.f, 80.f });
 
 		setEventDispatcher();
 	}
@@ -28,7 +34,6 @@ namespace bestia {
 	void MainMenu::loop()
 	{
 		m_window.setView(m_view);
-		m_window.draw(m_backgroundSprite);
 		m_window.draw(m_mainList);
 	}
 
@@ -61,7 +66,6 @@ namespace bestia {
 					m_window.close(); // TODO: in future probably would need some cleanup
 				}
 			}
-
 		}
 	}
 
@@ -71,11 +75,13 @@ namespace bestia {
 		{
 			if (it_list.isMouseOver(m_window))
 			{
-				it_list.setStyle(sf::Text::Bold);
+				it_list.setFillColor(sf::Color::Blue);
+				it_list.setStringColor(sf::Color::White);
 			}
 			else
 			{
-				it_list.setStyle(sf::Text::Regular);
+				it_list.setFillColor(sf::Color::White);
+				it_list.setStringColor(sf::Color::Black);
 			}
 		}
 	}
