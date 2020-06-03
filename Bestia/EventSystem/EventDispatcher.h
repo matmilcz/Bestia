@@ -38,7 +38,7 @@ namespace event {
 		{
 			EventDispatcher<TEvent>::get().m_fcn();
 		}
-		catch (const std::bad_function_call& e)
+		catch (const std::bad_function_call&)
 		{
 			LOG("WRN: Dispatcher not set for event: " << TEvent << '\n');
 		}

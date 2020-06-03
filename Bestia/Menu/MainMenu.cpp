@@ -31,7 +31,7 @@ namespace bestia {
 		setEventDispatcher();
 	}
 
-	void MainMenu::loop()
+	void MainMenu::prepareFrame()
 	{
 		m_window.setView(m_view);
 		m_window.draw(m_mainList);
@@ -39,10 +39,9 @@ namespace bestia {
 
 	void MainMenu::setEventDispatcher()
 	{
-		using namespace sf;
 		using namespace event;
-		EventDispatcher<Event::MouseButtonPressed>::setDispatcher(std::bind(&MainMenu::handleMouseButtonPressedEvent, this));
-		EventDispatcher<Event::MouseMoved>::setDispatcher(std::bind(&MainMenu::handleMouseMovedEvent, this));
+		EventDispatcher<sf::Event::MouseButtonPressed>::setDispatcher(std::bind(&MainMenu::handleMouseButtonPressedEvent, this));
+		EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&MainMenu::handleMouseMovedEvent, this));
 	}
 
 	void MainMenu::handleMouseButtonPressedEvent()
