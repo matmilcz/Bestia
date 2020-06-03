@@ -11,8 +11,8 @@ namespace event {
 	class EventDispatcher
 	{
 	public:
-		static void setDispatcher(const std::function<void()>& fcn);
-		static void dispatch();
+		static void setDispatcher(const std::function<void(const sf::Event& event)>& fcn);
+		static void dispatch(const sf::Event& event);
 
 	private:
 		EventDispatcher() = default;
@@ -22,21 +22,21 @@ namespace event {
 
 		static EventDispatcher<TEvent>& get();
 
-		std::function<void()> m_fcn;
+		std::function<void(const sf::Event& event)> m_fcn;
 	};
 
 	template<sf::Event::EventType TEvent>
-	void EventDispatcher<TEvent>::setDispatcher(const std::function<void()>& fcn)
+	void EventDispatcher<TEvent>::setDispatcher(const std::function<void(const sf::Event& event)>& fcn)
 	{
 		EventDispatcher<TEvent>::get().m_fcn = fcn;
 	}
 
 	template<sf::Event::EventType TEvent>
-	void EventDispatcher<TEvent>::dispatch()
+	void EventDispatcher<TEvent>::dispatch(const sf::Event& event)
 	{
 		try
 		{
-			EventDispatcher<TEvent>::get().m_fcn();
+			EventDispatcher<TEvent>::get().m_fcn(event);
 		}
 		catch (const std::bad_function_call&)
 		{

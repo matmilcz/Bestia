@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     std::unique_ptr <MainMenu> mainMenu;
 
     sf::Event event;
-    event::EventDispatcher<sf::Event::Closed>::setDispatcher([]() {
+    event::EventDispatcher<sf::Event::Closed>::setDispatcher([](const sf::Event& event) {
         gui::Window::close();
         });
 
@@ -50,21 +50,15 @@ int main(int argc, char* argv[])
             if (mainMenu == nullptr)
             {
                 mainMenu = std::make_unique <MainMenu> (gameState);
-                event::EventDispatcher<sf::Event::KeyPressed>::setDispatcher([&]() {
-                    if (sf::Keyboard::Escape == event.key.code)
-                    {
-                        gui::Window::close();
-                    }
-                    });
             }
             mainMenu->prepareFrame();
             break;
         case EGameState::InGame: // TODO: make a class to handle this state
             mainMenu.reset();
 
-            event::EventDispatcher<sf::Event::MouseButtonPressed>::setDispatcher([]() { LOG("Pressed\n"); });
-            event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher([]() { LOG("Moved\n"); });
-            event::EventDispatcher<sf::Event::KeyPressed>::setDispatcher([&]() { 
+            event::EventDispatcher<sf::Event::MouseButtonPressed>::setDispatcher([](const sf::Event& event) { LOG("Pressed\n"); });
+            event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher([](const sf::Event& event) { LOG("Moved\n"); });
+            event::EventDispatcher<sf::Event::KeyPressed>::setDispatcher([&](const sf::Event& event) {
                 if (sf::Keyboard::Escape == event.key.code)
                 {
                     gameState = EGameState::InMenu;

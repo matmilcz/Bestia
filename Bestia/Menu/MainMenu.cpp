@@ -39,12 +39,13 @@ namespace bestia {
 
 	void MainMenu::setEventDispatcher()
 	{
-		using namespace event;
-		EventDispatcher<sf::Event::MouseButtonPressed>::setDispatcher(std::bind(&MainMenu::handleMouseButtonPressedEvent, this));
-		EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&MainMenu::handleMouseMovedEvent, this));
+		using namespace std::placeholders;
+		event::EventDispatcher<sf::Event::MouseButtonPressed>::setDispatcher(std::bind(&MainMenu::handleMouseButtonPressedEvent, this, _1));
+		event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&MainMenu::handleMouseMovedEvent, this, _1));
+		event::EventDispatcher<sf::Event::KeyPressed>::setDispatcher(std::bind(&MainMenu::handleKeyPressedEvent, this, _1));
 	}
 
-	void MainMenu::handleMouseButtonPressedEvent()
+	void MainMenu::handleMouseButtonPressedEvent(const sf::Event& event)
 	{
 		for (auto& it_list : m_mainList)
 		{
@@ -68,7 +69,7 @@ namespace bestia {
 		}
 	}
 
-	void MainMenu::handleMouseMovedEvent()
+	void MainMenu::handleMouseMovedEvent(const sf::Event& event)
 	{
 		for (auto& it_list : m_mainList)
 		{
@@ -82,6 +83,14 @@ namespace bestia {
 				it_list.setFillColor(sf::Color::White);
 				it_list.setStringColor(sf::Color::Black);
 			}
+		}
+	}
+
+	void MainMenu::handleKeyPressedEvent(const sf::Event& event)
+	{
+		if (sf::Keyboard::Escape == event.key.code)
+		{
+			gui::Window::close();
 		}
 	}
 

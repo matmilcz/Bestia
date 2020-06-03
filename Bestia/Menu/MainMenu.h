@@ -29,8 +29,9 @@ namespace bestia {
 
 		sf::Font m_font;
 
-		void handleMouseButtonPressedEvent();
-		void handleMouseMovedEvent();
+		void handleMouseButtonPressedEvent(const sf::Event& event);
+		void handleMouseMovedEvent(const sf::Event& event);
+		void handleKeyPressedEvent(const sf::Event& event);
 	};
 
 }
