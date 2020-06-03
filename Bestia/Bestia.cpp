@@ -45,6 +45,15 @@ int main(int argc, char* argv[])
         view.setCenter(0.0f, 0.0f);
         });
 
+    //sf::Mouse::setPosition(bestia::gui::Cursor::mouseBlockedPosition, window);
+    window.setMouseCursorGrabbed(true);
+
+    sf::Image i;
+    i.loadFromFile("Resources/sprites/cursor.png");
+    sf::Cursor c;
+    c.loadFromPixels(i.getPixelsPtr(), i.getSize(), { 14, 5 });
+    window.setMouseCursor(c);
+
     while (window.isOpen())
     {
         while (window.pollEvent(event))
@@ -60,6 +69,12 @@ int main(int argc, char* argv[])
             if (mainMenu == nullptr)
             {
                 mainMenu = std::make_unique <bestia::MainMenu> (window, gameState);
+                bestia::event::EventDispatcher<sf::Event::KeyPressed>::setDispatcher([&]() {
+                    if (sf::Keyboard::Escape == event.key.code)
+                    {
+                        window.close();
+                    }
+                    });
             }
             mainMenu->loop();
             break;

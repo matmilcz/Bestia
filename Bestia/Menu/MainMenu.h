@@ -25,7 +25,7 @@ namespace bestia {
 
 		sf::RenderWindow& m_window;
 		EGameState& m_gameState;
-		sf::View m_view{ sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT) };
+		sf::View m_view = sf::View{ sf::Vector2f(0.0f, 0.0f), sf::Vector2f(m_window.getSize()) };
 
 		sf::Font m_font;
 
