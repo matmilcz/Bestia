@@ -1,5 +1,4 @@
 ﻿#include <memory>
-#include "Gui/Window.h"
 #include "Utils/Log.h"
 #include "AnimatedSprite.h"
 #include "Menu/MainMenu.h"
