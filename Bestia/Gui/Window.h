@@ -23,11 +23,7 @@ namespace gui {
         static inline bool pollEvent(sf::Event& event);
         static inline bool isOpen();
 
-        static inline sf::RenderWindow& getRenderWindow() // TODO: temporary
-        {
-            return get().m_renderWindow;
-        }
-
+        static inline sf::RenderWindow& getRenderWindow();
         static inline const sf::View& getView();
         static inline sf::Vector2u getSize();
 
@@ -78,6 +74,11 @@ namespace gui {
     inline bool Window::isOpen()
     {
         return get().m_renderWindow.isOpen();
+    }
+
+    inline sf::RenderWindow& Window::getRenderWindow()
+    {
+        return get().m_renderWindow;
     }
 
     inline const sf::View& Window::getView()
