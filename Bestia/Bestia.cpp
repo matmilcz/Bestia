@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
         case EGameState::InMenu:
             if (mainMenu == nullptr)
             {
-                mainMenu = std::make_unique <MainMenu> (gui::Window::getRenderWindow(), gameState);
+                mainMenu = std::make_unique <MainMenu> (gameState);
                 event::EventDispatcher<sf::Event::KeyPressed>::setDispatcher([&]() {
                     if (sf::Keyboard::Escape == event.key.code)
                     {

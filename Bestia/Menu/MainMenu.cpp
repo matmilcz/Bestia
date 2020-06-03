@@ -2,8 +2,8 @@
 
 namespace bestia {
 
-	MainMenu::MainMenu(sf::RenderWindow& window, EGameState& gameState)
-		: m_window(window), m_gameState(gameState)
+	MainMenu::MainMenu(EGameState& gameState)
+		: m_gameState(gameState)
 	{
 		m_font.loadFromFile("Resources/fonts/calibri.ttf");
 
@@ -33,8 +33,8 @@ namespace bestia {
 
 	void MainMenu::prepareFrame()
 	{
-		m_window.setView(m_view);
-		m_window.draw(m_mainList);
+		gui::Window::setView(m_view);
+		gui::Window::draw(m_mainList);
 	}
 
 	void MainMenu::setEventDispatcher()
@@ -48,7 +48,7 @@ namespace bestia {
 	{
 		for (auto& it_list : m_mainList)
 		{
-			if (it_list.isMouseOver(m_window))
+			if (it_list.isMouseOver(gui::Window::getRenderWindow()))
 			{
 				if ("NEW GAME" == it_list.getString())
 				{
@@ -62,7 +62,7 @@ namespace bestia {
 				}
 				else if ("EXIT" == it_list.getString())
 				{
-					m_window.close(); // TODO: in future probably would need some cleanup
+					gui::Window::close(); // TODO: in future probably would need some cleanup
 				}
 			}
 		}
@@ -72,7 +72,7 @@ namespace bestia {
 	{
 		for (auto& it_list : m_mainList)
 		{
-			if (it_list.isMouseOver(m_window))
+			if (it_list.isMouseOver(gui::Window::getRenderWindow()))
 			{
 				it_list.setFillColor(sf::Color::Blue);
 				it_list.setStringColor(sf::Color::White);
