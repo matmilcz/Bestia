@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <functional>
 #include "ExtendedSFML/RoundedRectangleShape.h"
 #include "Utils/Log.h"
 
@@ -41,6 +42,11 @@ namespace gui {
 
 		void setPosition(const sf::Vector2f& position);
 		void setAligment(const EVerticalAlignment& vAlign, const EHorizontalAlignment& hAlign);
+		void setOnClickEvent(const std::function<void()>& onClickEvent);
+		void setOnMouseOverEvent(const std::function<void()>& onMouseOverEvent);
+
+		virtual void onClickEvent();
+		virtual void onMouseOverEvent();
 
 		const sf::String& getString() const;
 		const sf::Vector2f& getSize() const;
@@ -53,10 +59,12 @@ namespace gui {
 		sf::extended::RoundedRectangleShape m_roundedRectangle{ sf::Vector2f{50, 30}, 5, 5 };
 		EVerticalAlignment m_vAlign = EVerticalAlignment::Center;	// TODO: keep alignment in one variable
 		EHorizontalAlignment m_hAlign = EHorizontalAlignment::Center;
+		std::function<void()> m_onClickEvent;
+		std::function<void()> m_onMouseOverEvent;
 
 		void setVerticalAlignment(const EVerticalAlignment& vAlign);
 		void setHorizontalAlignment(const EHorizontalAlignment& hAlign);
-
+		
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	};
 

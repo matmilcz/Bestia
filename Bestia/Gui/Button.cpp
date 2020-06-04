@@ -59,6 +59,16 @@ namespace gui {
 		setHorizontalAlignment(hAlign);
 	}
 
+	void Button::setOnClickEvent(const std::function<void()>& onClickEvent)
+	{
+		m_onClickEvent = onClickEvent;
+	}
+
+	void Button::setOnMouseOverEvent(const std::function<void()>& onMouseOverEvent)
+	{
+		m_onMouseOverEvent = onMouseOverEvent;
+	}
+
 	const sf::String& Button::getString() const
 	{
 		return m_string.getString();
@@ -139,6 +149,30 @@ namespace gui {
 			m_string.setPosition(sf::Vector2f{ stringPosX, stringPosY });
 			break;
 		}
+		}
+	}
+
+	void Button::onClickEvent()
+	{
+		if (m_onClickEvent)
+		{
+			m_onClickEvent();
+		}
+		else
+		{
+			LOG("WRN: no onClick event set for button\n");
+		}
+	}
+
+	void Button::onMouseOverEvent()
+	{
+		if (m_onMouseOverEvent)
+		{
+			m_onMouseOverEvent();
+		}
+		else
+		{
+			LOG("WRN: no onMouseOver event set for button\n");
 		}
 	}
 

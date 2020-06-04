@@ -9,21 +9,39 @@ namespace bestia {
 
 		gui::Button tempButton;
 		constexpr uint length = 5;
-		constexpr uint fontSize = 30;
 		for (auto i = 0; i < length; ++i)
 		{
 			m_mainList.add(tempButton);
-			m_mainList[i].setFont(m_font);
-			m_mainList[i].setStringColor(sf::Color::Black);
-			m_mainList[i].setCharacterSize(fontSize);
-			m_mainList[i].setSize(sf::Vector2f{ 250.f, 70.f });
+		}
+
+		constexpr uint fontSize = 30;
+		for (auto& it_list : m_mainList)
+		{
+			it_list.setFont(m_font);
+			it_list.setStringColor(sf::Color::Black);
+			it_list.setCharacterSize(fontSize);
+			it_list.setSize(sf::Vector2f{ 250.f, 70.f });
+			it_list.setOnMouseOverEvent([&it_list]() {
+				it_list.setFillColor(sf::Color::Blue);
+				it_list.setStringColor(sf::Color::White);
+				});
 		}
 
 		m_mainList[0].setString("NEW GAME");
+		m_mainList[0].setOnClickEvent([this]() { m_gameState = EGameState::InGame; });
+
 		m_mainList[1].setString("OPTIONS");
+
 		m_mainList[2].setString("HOW TO PLAY");
+
 		m_mainList[3].setString("CREDITS");
+		m_mainList[3].setOnClickEvent([]() {
+			LOG("Credits: Mlody i Zosia\n" <<
+				"Attrribution: \n" <<
+				"Background photo created by freepik - www.freepik.com\n"); });
+
 		m_mainList[4].setString("EXIT");
+		m_mainList[4].setOnClickEvent([]() { gui::Window::close(); });
 		
 		m_mainList.setPosition(sf::Vector2f{ -125.f, -200.f });
 		m_mainList.setSpacing(sf::Vector2f{ 0.f, 80.f });
@@ -51,20 +69,7 @@ namespace bestia {
 		{
 			if (it_list.isMouseOver(gui::Window::getRenderWindow()))
 			{
-				if ("NEW GAME" == it_list.getString())
-				{
-					m_gameState = EGameState::InGame;
-				}
-				else if ("CREDITS" == it_list.getString())
-				{
-					LOG("Credits: Mlody i Zosia\n" <<
-						"Attrribution: \n" <<
-						"Background photo created by freepik - www.freepik.com\n");
-				}
-				else if ("EXIT" == it_list.getString())
-				{
-					gui::Window::close(); // TODO: in future probably would need some cleanup
-				}
+				it_list.onClickEvent();
 			}
 		}
 	}
@@ -75,8 +80,7 @@ namespace bestia {
 		{
 			if (it_list.isMouseOver(gui::Window::getRenderWindow()))
 			{
-				it_list.setFillColor(sf::Color::Blue);
-				it_list.setStringColor(sf::Color::White);
+				it_list.onMouseOverEvent();
 			}
 			else
 			{
