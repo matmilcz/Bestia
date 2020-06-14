@@ -19,7 +19,6 @@ namespace bestia {
 		MainMenu& operator= (const MainMenu&) = delete;
 
 		void prepareFrame();
-		void setEventDispatcher();
 
 	private:
 		gui::DrawableList<gui::Button> m_mainList;
@@ -28,10 +27,6 @@ namespace bestia {
 		sf::View m_view = sf::View{ sf::Vector2f{ 0.0f, 0.0f }, sf::Vector2f{ gui::Window::getSize() } };
 
 		sf::Font m_font;
-
-		void handleMouseButtonPressedEvent(const sf::Event& event);
-		void handleMouseMovedEvent(const sf::Event& event);
-		void handleKeyPressedEvent(const sf::Event& event);
 	};
 
 }

@@ -3,6 +3,37 @@
 namespace bestia {
 namespace gui {
 
+	Button::Button()
+	{
+		using namespace std::placeholders;
+		event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&Button::onMouseEnterEvent, this, _1), m_id);
+		event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&Button::onMouseExitEvent, this, _1), m_id);
+		event::EventDispatcher<sf::Event::MouseButtonPressed>::setDispatcher(std::bind(&Button::onMousePressedEvent, this, _1), m_id);
+	}
+
+	Button::Button(const Button&) : Button()
+	{
+	}
+
+	Button::~Button()
+	{
+		event::EventDispatcher<sf::Event::MouseMoved>::removeDispatcher(m_id);
+		event::EventDispatcher<sf::Event::MouseButtonPressed>::removeDispatcher(m_id);
+	}
+
+	Button& Button::operator= (const Button& button)
+	{
+		if (this != &button)
+		{
+			using namespace std::placeholders;
+			event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&Button::onMouseEnterEvent, this, _1), m_id);
+			event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&Button::onMouseExitEvent, this, _1), m_id);
+			event::EventDispatcher<sf::Event::MouseButtonPressed>::setDispatcher(std::bind(&Button::onMousePressedEvent, this, _1), m_id);
+		}
+
+		return *this;
+	}
+
 	void Button::setString(const sf::String& string)
 	{
 		m_string.setString(string);
@@ -59,9 +90,24 @@ namespace gui {
 		setHorizontalAlignment(hAlign);
 	}
 
-	void Button::setOnClickEvent(const std::function<void()>& onClickEvent)
+	void Button::setActive(const bool isActive)
 	{
-		m_onClickEvent = onClickEvent;
+		m_isActive = isActive;
+	}
+
+	void Button::setOnMousePressedEvent(const std::function<void()>& onMousePressedEvent)
+	{
+		m_onMousePressedEvent = onMousePressedEvent;
+	}
+
+	void Button::setOnMouseEnterEvent(const std::function<void()>& onMouseEnterEvent)
+	{
+		m_onMouseEnterEvent = onMouseEnterEvent;
+	}
+
+	void Button::setOnMouseExitEvent(const std::function<void()>& onMouseExitEvent)
+	{
+		m_onMouseExitEvent = onMouseExitEvent;
 	}
 
 	void Button::setOnMouseOverEvent(const std::function<void()>& onMouseOverEvent)
@@ -152,27 +198,50 @@ namespace gui {
 		}
 	}
 
-	void Button::onClickEvent()
+	void Button::onMousePressedEvent(const sf::Event& event)
 	{
-		if (m_onClickEvent)
+		if (m_onMousePressedEvent)
 		{
-			m_onClickEvent();
+			if (isMouseOver() && isActive())
+			{
+				m_onMousePressedEvent();
+			}
 		}
 		else
 		{
-			LOG("WRN: no onClick event set for button\n");
+			LOG("WRN: no onMousePressedEvent event set for button " << m_id << '\n');
 		}
 	}
 
-	void Button::onMouseOverEvent()
+	void Button::onMouseEnterEvent(const sf::Event& event)
 	{
-		if (m_onMouseOverEvent)
+		if (m_onMouseEnterEvent)
 		{
-			m_onMouseOverEvent();
+			if (isMouseOver() && !isActive())
+			{
+				setActive(true);
+				m_onMouseEnterEvent();
+			}
 		}
 		else
 		{
-			LOG("WRN: no onMouseOver event set for button\n");
+			LOG("WRN: no onMouseEnter event set for button " << m_id << '\n');
+		}
+	}
+
+	void Button::onMouseExitEvent(const sf::Event& event)
+	{
+		if (m_onMouseExitEvent)
+		{
+			if (!isMouseOver() && isActive())
+			{
+				setActive(false);
+				m_onMouseExitEvent();
+			}
+		}
+		else
+		{
+			LOG("WRN: no onMouseExit event set for button " << m_id << '\n');
 		}
 	}
 

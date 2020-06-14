@@ -32,6 +32,7 @@ namespace gui {
 		void resetSpacing();
 		void add(const TDrawableItem& drawableItem);
 		void add(TDrawableItem&& drawableItem);
+		void reserve(const uint capacity);
 
 	private:
 		std::vector <TDrawableItem> m_list;
@@ -103,6 +104,12 @@ namespace gui {
 	void DrawableList<TDrawableItem>::add(TDrawableItem&& drawableItem)
 	{
 		m_list.emplace_back(std::move(drawableItem));
+	}
+
+	template<typename TDrawableItem>
+	void DrawableList<TDrawableItem>::reserve(const uint capacity)
+	{
+		m_list.reserve(capacity);
 	}
 
 	template<typename TDrawableItem>

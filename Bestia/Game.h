@@ -7,7 +7,7 @@
 namespace bestia {
 
 	// TODO: it's just temporary implementation to keep Bestia.cpp cleaner
-	class Game
+	class Game : event::EventCaller
 	{
 	public:
 		Game(EGameState& gameState, sf::Clock& frameClock)
@@ -19,16 +19,17 @@ namespace bestia {
 
 			beast.setScale(sf::Vector2f(5.0f, 5.0f));
 
-			// TODO: app crashes after main menu is deleted if proper events dispatchers are not updated
-			//		 implement cleaning of the event dispatcher
-			event::EventDispatcher<sf::Event::MouseButtonPressed>::setDispatcher([](const sf::Event& event) { LOG("Pressed\n"); });
-			event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher([](const sf::Event& event) { LOG("Moved\n"); });
 			event::EventDispatcher<sf::Event::KeyPressed>::setDispatcher([&](const sf::Event& event) {
 				if (sf::Keyboard::Escape == event.key.code)
 				{
 					gameState = EGameState::InMenu;
 				}
-				});
+				}, m_id);
+		}
+
+		~Game()
+		{
+			event::EventDispatcher<sf::Event::KeyPressed>::removeDispatcher(m_id);
 		}
 
 		void prepareFrame()

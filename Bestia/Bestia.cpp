@@ -6,8 +6,6 @@ int main(int argc, char* argv[])
 {
     using namespace bestia;
 
-    LOG("Here you can log things that will not appear in release mode:" << '\n');
-
     EGameState gameState = EGameState::InMenu;
 
     sf::Clock frameClock;
@@ -17,7 +15,7 @@ int main(int argc, char* argv[])
 
     event::EventDispatcher<sf::Event::Closed>::setDispatcher([](const sf::Event& event) {
         gui::Window::close();
-        });
+        }, 0);
 
     sf::Event event;
     while (gui::Window::isOpen())
@@ -32,7 +30,10 @@ int main(int argc, char* argv[])
         switch (gameState)
         {
         case EGameState::InMenu:
-            game.reset();
+            if (game != nullptr)
+            {
+                game.reset();
+            }
 
             if (mainMenu == nullptr)
             {
@@ -41,7 +42,10 @@ int main(int argc, char* argv[])
             mainMenu->prepareFrame();
             break;
         case EGameState::InGame:
-            mainMenu.reset();
+            if (mainMenu != nullptr)
+            {
+                mainMenu.reset();
+            }
 
             if (game == nullptr)
             {
