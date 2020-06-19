@@ -23,27 +23,23 @@ namespace bestia {
 			it_list.setStringColor(sf::Color::Black);
 			it_list.setCharacterSize(fontSize);
 			it_list.setSize(sf::Vector2f{ 250.f, 70.f });
-			it_list.setOnMouseOverEvent([&it_list]() {
-				it_list.setFillColor(sf::Color::Blue);
-				it_list.setStringColor(sf::Color::White);
-				});
 		}
 
 		m_mainList[0].setString("NEW GAME");
-		m_mainList[0].setOnMousePressedEvent([this]() { m_gameState = EGameState::InGame; });
+		m_mainList[0].setOnMouseButtonPressedEvent([this](const sf::Event& event) { m_gameState = EGameState::InGame; });
 
 		m_mainList[1].setString("OPTIONS");
 
 		m_mainList[2].setString("HOW TO PLAY");
 
 		m_mainList[3].setString("CREDITS");
-		m_mainList[3].setOnMousePressedEvent([]() {
+		m_mainList[3].setOnMouseButtonPressedEvent([](const sf::Event& event) {
 			LOG("Credits: Mlody i Zosia\n" <<
 				"Attrribution: \n" <<
 				"Background photo created by freepik - www.freepik.com\n"); });
 
 		m_mainList[4].setString("EXIT");
-		m_mainList[4].setOnMousePressedEvent([]() { gui::Window::close(); });
+		m_mainList[4].setOnMouseButtonPressedEvent([](const sf::Event& event) { gui::Window::close(); });
 		
 		m_mainList.setPosition(sf::Vector2f{ -125.f, -200.f });
 		m_mainList.setSpacing(sf::Vector2f{ 0.f, 80.f });

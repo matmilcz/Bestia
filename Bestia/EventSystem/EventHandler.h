@@ -5,6 +5,33 @@
 namespace bestia {
 namespace event {
 	
+	static const char* eventName[] =
+	{
+		"Closed",
+		"Resized",
+		"LostFocus",
+		"GainedFocus",
+		"TextEntered",
+		"KeyPressed",
+		"KeyReleased",
+		"MouseWheelMoved",
+		"MouseWheelScrolled",
+		"MouseButtonPressed",
+		"MouseButtonReleased",
+		"MouseMoved",
+		"MouseEntered",
+		"MouseLeft",
+		"JoystickButtonPressed",
+		"JoystickButtonReleased",
+		"JoystickMoved",
+		"JoystickConnected",
+		"JoystickDisconnected",
+		"TouchBegan",
+		"TouchMoved",
+		"TouchEnded",
+		"SensorChanged"
+	};
+
 	void handleEvent(const sf::Event& event)
 	{
 		switch (event.type)
@@ -24,7 +51,7 @@ namespace event {
 		case sf::Event::KeyPressed:
 			EventDispatcher<sf::Event::KeyPressed>::dispatch(event);
 		default:
-			LOG("INF: Unhandled event: " << event.type << '\n');
+			LOG("INF: Unhandled event: " << eventName[event.type] << '\n');
 			break;
 		}
 	}

@@ -13,10 +13,6 @@ int main(int argc, char* argv[])
     std::unique_ptr<MainMenu> mainMenu;
     std::unique_ptr<Game> game;
 
-    event::EventDispatcher<sf::Event::Closed>::setDispatcher([](const sf::Event& event) {
-        gui::Window::close();
-        }, 0);
-
     sf::Event event;
     while (gui::Window::isOpen())
     {

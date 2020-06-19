@@ -5,10 +5,18 @@ namespace gui {
 
 	Button::Button()
 	{
+		setOnMouseEnterEvent([this](const sf::Event& event) {
+			setFillColor(sf::Color::Blue);
+			});
+
+		setOnMouseExitEvent([this](const sf::Event& event) {
+			setFillColor(sf::Color::White);
+			});
+
 		using namespace std::placeholders;
-		event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&Button::onMouseEnterEvent, this, _1), m_id);
-		event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&Button::onMouseExitEvent, this, _1), m_id);
-		event::EventDispatcher<sf::Event::MouseButtonPressed>::setDispatcher(std::bind(&Button::onMousePressedEvent, this, _1), m_id);
+		event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseEnterEvent, this, _1), this);
+		event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseExitEvent, this, _1), this);
+		event::EventDispatcher<sf::Event::MouseButtonPressed>::add(std::bind(&Button::onMouseButtonPressedEvent, this, _1), this);
 	}
 
 	Button::Button(const Button&) : Button()
@@ -17,8 +25,8 @@ namespace gui {
 
 	Button::~Button()
 	{
-		event::EventDispatcher<sf::Event::MouseMoved>::removeDispatcher(m_id);
-		event::EventDispatcher<sf::Event::MouseButtonPressed>::removeDispatcher(m_id);
+		event::EventDispatcher<sf::Event::MouseMoved>::remove(this);
+		event::EventDispatcher<sf::Event::MouseButtonPressed>::remove(this);
 	}
 
 	Button& Button::operator= (const Button& button)
@@ -26,9 +34,9 @@ namespace gui {
 		if (this != &button)
 		{
 			using namespace std::placeholders;
-			event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&Button::onMouseEnterEvent, this, _1), m_id);
-			event::EventDispatcher<sf::Event::MouseMoved>::setDispatcher(std::bind(&Button::onMouseExitEvent, this, _1), m_id);
-			event::EventDispatcher<sf::Event::MouseButtonPressed>::setDispatcher(std::bind(&Button::onMousePressedEvent, this, _1), m_id);
+			event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseEnterEvent, this, _1), this);
+			event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseExitEvent, this, _1), this);
+			event::EventDispatcher<sf::Event::MouseButtonPressed>::add(std::bind(&Button::onMouseButtonPressedEvent, this, _1), this);
 		}
 
 		return *this;
@@ -93,26 +101,6 @@ namespace gui {
 	void Button::setActive(const bool isActive)
 	{
 		m_isActive = isActive;
-	}
-
-	void Button::setOnMousePressedEvent(const std::function<void()>& onMousePressedEvent)
-	{
-		m_onMousePressedEvent = onMousePressedEvent;
-	}
-
-	void Button::setOnMouseEnterEvent(const std::function<void()>& onMouseEnterEvent)
-	{
-		m_onMouseEnterEvent = onMouseEnterEvent;
-	}
-
-	void Button::setOnMouseExitEvent(const std::function<void()>& onMouseExitEvent)
-	{
-		m_onMouseExitEvent = onMouseExitEvent;
-	}
-
-	void Button::setOnMouseOverEvent(const std::function<void()>& onMouseOverEvent)
-	{
-		m_onMouseOverEvent = onMouseOverEvent;
 	}
 
 	const sf::String& Button::getString() const
@@ -198,50 +186,29 @@ namespace gui {
 		}
 	}
 
-	void Button::onMousePressedEvent(const sf::Event& event)
+	void Button::onMouseButtonPressedEvent(const sf::Event& event)
 	{
-		if (m_onMousePressedEvent)
+		if (isMouseOver() && isActive())
 		{
-			if (isMouseOver() && isActive())
-			{
-				m_onMousePressedEvent();
-			}
-		}
-		else
-		{
-			LOG("WRN: no onMousePressedEvent event set for button " << m_id << '\n');
+			event::MouseButtonPressedEvent::onMouseButtonPressedEvent(event);
 		}
 	}
 
 	void Button::onMouseEnterEvent(const sf::Event& event)
 	{
-		if (m_onMouseEnterEvent)
+		if (isMouseOver() && !isActive())
 		{
-			if (isMouseOver() && !isActive())
-			{
-				setActive(true);
-				m_onMouseEnterEvent();
-			}
-		}
-		else
-		{
-			LOG("WRN: no onMouseEnter event set for button " << m_id << '\n');
+			setActive(true);
+			event::MouseEnterEvent::onMouseEnterEvent(event);
 		}
 	}
 
 	void Button::onMouseExitEvent(const sf::Event& event)
 	{
-		if (m_onMouseExitEvent)
+		if (!isMouseOver() && isActive())
 		{
-			if (!isMouseOver() && isActive())
-			{
-				setActive(false);
-				m_onMouseExitEvent();
-			}
-		}
-		else
-		{
-			LOG("WRN: no onMouseExit event set for button " << m_id << '\n');
+			setActive(false);
+			event::MouseExitEvent::onMouseExitEvent(event);
 		}
 	}
 

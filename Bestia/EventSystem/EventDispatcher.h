@@ -1,44 +1,21 @@
 #pragma once
 
-#include <SFML/Window/Event.hpp>
-#include <functional>
 #include <vector>
 #include <algorithm>
-#include "Utils/Log.h"
+#include "Events.h"
 
 namespace bestia {
 namespace event {
 
 	using event_fcn = std::function<void(const sf::Event& event)>;
-	using caller_id = uint64_t;
-
-	class EventCaller
-	{
-	protected:
-		EventCaller()
-		{
-			m_id = ++m_counter;
-		}
-
-		~EventCaller() = default; // TODO: maybe store free ids
-
-		caller_id m_id;
-
-	private:
-		static uint64_t m_counter;
-	};
 
 	template <sf::Event::EventType TEvent>
 	class EventDispatcher
 	{
 	public:
-		static void setDispatcher(const event_fcn& fcn, const caller_id& id);
-		static void removeDispatcher(const caller_id& id);
+		static void add(const event_fcn& fcn, const EventCaller* eventCaller);
+		static void remove(const EventCaller* eventCaller);
 		static void dispatch(const sf::Event& event);
-		static void clear()
-		{
-			EventDispatcher<TEvent>::get().m_fcn.clear();
-		}
 
 	private:
 		EventDispatcher();
@@ -49,24 +26,24 @@ namespace event {
 
 		static EventDispatcher<TEvent>& get();
 
-		std::vector<std::pair<event_fcn, caller_id>> m_fcn;
+		std::vector<std::pair<event_fcn, const EventCaller*>> m_fcn;
 	};
 
 	template<sf::Event::EventType TEvent>
-	void EventDispatcher<TEvent>::setDispatcher(const event_fcn& fcn, const caller_id& id)
+	void EventDispatcher<TEvent>::add(const event_fcn& fcn, const EventCaller* eventCaller)
 	{
-		EventDispatcher<TEvent>::get().m_fcn.push_back({ fcn, id });
+		EventDispatcher<TEvent>::get().m_fcn.push_back({ fcn, eventCaller });
 	}
 
 	template<sf::Event::EventType TEvent>
-	void EventDispatcher<TEvent>::removeDispatcher(const caller_id& id)
+	void EventDispatcher<TEvent>::remove(const EventCaller* eventCaller)
 	{
 		auto& dispatcher = EventDispatcher<TEvent>::get();
 
 		dispatcher.m_fcn.erase(
 			std::remove_if(
 				dispatcher.m_fcn.begin(), dispatcher.m_fcn.end(),
-				[&id](const std::pair<event_fcn, caller_id>& pair) { return pair.second == id; }),
+				[&eventCaller](const std::pair<event_fcn, const EventCaller*>& pair) { return pair.second == eventCaller; }),
 			dispatcher.m_fcn.end()
 		);
 	}

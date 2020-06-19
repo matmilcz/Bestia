@@ -1,11 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <functional>
 #include "ExtendedSFML/RoundedRectangleShape.h"
 #include "Window.h"
 #include "EventSystem/EventDispatcher.h"
-#include "Utils/Log.h"
 
 namespace bestia {
 namespace gui {
@@ -26,7 +24,11 @@ namespace gui {
 		Right,
 	};
 
-	class Button : public sf::Drawable, public event::EventCaller
+	class Button : 
+		public sf::Drawable, 
+		public event::MouseButtonPressedEvent,
+		public event::MouseEnterEvent,
+		public event::MouseExitEvent
 	{
 	public:
 		Button();
@@ -46,14 +48,9 @@ namespace gui {
 		void setAligment(const EVerticalAlignment& vAlign, const EHorizontalAlignment& hAlign);
 		void setActive(const bool isActive);
 
-		void setOnMousePressedEvent(const std::function<void()>& onMousePressedEvent);
-		void setOnMouseEnterEvent(const std::function<void()>& onMouseEnterEvent);
-		void setOnMouseExitEvent(const std::function<void()>& onMouseExitEvent);
-		void setOnMouseOverEvent(const std::function<void()>& onMouseOverEvent);
-
-		virtual void onMousePressedEvent(const sf::Event& event);
-		virtual void onMouseEnterEvent(const sf::Event& event);
-		virtual void onMouseExitEvent(const sf::Event& event);
+		virtual void onMouseButtonPressedEvent(const sf::Event& event) override;
+		virtual void onMouseEnterEvent(const sf::Event& event) override;
+		virtual void onMouseExitEvent(const sf::Event& event) override;
 
 		const sf::String& getString() const;
 		const sf::Vector2f& getSize() const;
@@ -71,15 +68,6 @@ namespace gui {
 		EVerticalAlignment m_vAlign = EVerticalAlignment::Center;	// TODO: keep alignment in one variable
 		EHorizontalAlignment m_hAlign = EHorizontalAlignment::Center;
 		bool m_isActive = false;
-
-		std::function<void()> m_onMousePressedEvent;
-		std::function<void()> m_onMouseEnterEvent = [this]() {
-			setFillColor(sf::Color::Blue);
-		};
-		std::function<void()> m_onMouseExitEvent = [this]() {
-			setFillColor(sf::Color::White);
-		};
-		std::function<void()> m_onMouseOverEvent;
 
 		void setVerticalAlignment(const EVerticalAlignment& vAlign);
 		void setHorizontalAlignment(const EHorizontalAlignment& hAlign);

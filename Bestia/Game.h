@@ -7,7 +7,8 @@
 namespace bestia {
 
 	// TODO: it's just temporary implementation to keep Bestia.cpp cleaner
-	class Game : event::EventCaller
+	class Game :
+		public event::EventCaller
 	{
 	public:
 		Game(EGameState& gameState, sf::Clock& frameClock)
@@ -19,17 +20,17 @@ namespace bestia {
 
 			beast.setScale(sf::Vector2f(5.0f, 5.0f));
 
-			event::EventDispatcher<sf::Event::KeyPressed>::setDispatcher([&](const sf::Event& event) {
+			event::EventDispatcher<sf::Event::KeyPressed>::add([&](const sf::Event& event) {
 				if (sf::Keyboard::Escape == event.key.code)
 				{
 					gameState = EGameState::InMenu;
 				}
-				}, m_id);
+				}, this);
 		}
 
 		~Game()
 		{
-			event::EventDispatcher<sf::Event::KeyPressed>::removeDispatcher(m_id);
+			event::EventDispatcher<sf::Event::KeyPressed>::remove(this);
 		}
 
 		void prepareFrame()
