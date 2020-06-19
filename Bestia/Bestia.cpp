@@ -1,6 +1,7 @@
 ﻿#include <memory>
 #include "Menu/MainMenu.h"
 #include "Game.h"
+#include "EventSystem/EventHandler.h"
 
 int main(int argc, char* argv[])
 {

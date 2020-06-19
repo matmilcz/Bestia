@@ -2,7 +2,7 @@
 
 #include "Utils/Log.h"
 #include "AnimatedSprite.h"
-#include "EventSystem/EventHandler.h"
+#include "EventSystem/EventDispatcher.h"
 
 namespace bestia {
 
