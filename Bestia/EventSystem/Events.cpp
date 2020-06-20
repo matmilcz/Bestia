@@ -20,37 +20,37 @@ namespace event {
 		}
 	}
 
-	void MouseEnterEvent::setOnMouseEnterEvent(const event_fcn_t& eventFcn)
+	void MouseEnteredEvent::setOnMouseEnteredEvent(const event_fcn_t& eventFcn)
 	{
-		m_onMouseEnterEvent = eventFcn;
+		m_onMouseEnteredEvent = eventFcn;
 	}
 
-	void MouseEnterEvent::onMouseEnterEvent(const sf::Event& event)
+	void MouseEnteredEvent::onMouseEnteredEvent(const sf::Event& event)
 	{
-		if (m_onMouseEnterEvent)
+		if (m_onMouseEnteredEvent)
 		{
-			m_onMouseEnterEvent(event);
+			m_onMouseEnteredEvent(event);
 		}
 		else
 		{
-			LOG("WRN: no onMouseEnterEvent event set for object: " << this << '\n');
+			LOG("WRN: no onMouseEnteredEvent event set for object: " << this << '\n');
 		}
 	}
 
-	void MouseExitEvent::setOnMouseExitEvent(const event_fcn_t& eventFcn)
+	void MouseLeftEvent::setOnMouseLeftEvent(const event_fcn_t& eventFcn)
 	{
-		m_onMouseExitEvent = eventFcn;
+		m_onMouseLeftEvent = eventFcn;
 	}
 
-	void MouseExitEvent::onMouseExitEvent(const sf::Event& event)
+	void MouseLeftEvent::onMouseLeftEvent(const sf::Event& event)
 	{
-		if (m_onMouseExitEvent)
+		if (m_onMouseLeftEvent)
 		{
-			m_onMouseExitEvent(event);
+			m_onMouseLeftEvent(event);
 		}
 		else
 		{
-			LOG("WRN: no onMouseExitEvent event set for object: " << this << '\n');
+			LOG("WRN: no onMouseLeftEvent event set for object: " << this << '\n');
 		}
 	}
 

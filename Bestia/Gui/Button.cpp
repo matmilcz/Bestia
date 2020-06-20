@@ -5,17 +5,17 @@ namespace gui {
 
 	Button::Button()
 	{
-		setOnMouseEnterEvent([this](const sf::Event& event) {
+		setOnMouseEnteredEvent([this](const sf::Event& event) {
 			setFillColor(sf::Color::Blue);
 			});
 
-		setOnMouseExitEvent([this](const sf::Event& event) {
+		setOnMouseLeftEvent([this](const sf::Event& event) {
 			setFillColor(sf::Color::White);
 			});
 
 		using namespace std::placeholders;
-		event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseEnterEvent, this, _1), this);
-		event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseExitEvent, this, _1), this);
+		event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseEnteredEvent, this, _1), this);
+		event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseLeftEvent, this, _1), this);
 		event::EventDispatcher<sf::Event::MouseButtonPressed>::add(std::bind(&Button::onMouseButtonPressedEvent, this, _1), this);
 	}
 
@@ -34,8 +34,8 @@ namespace gui {
 		if (this != &button)
 		{
 			using namespace std::placeholders;
-			event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseEnterEvent, this, _1), this);
-			event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseExitEvent, this, _1), this);
+			event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseEnteredEvent, this, _1), this);
+			event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseLeftEvent, this, _1), this);
 			event::EventDispatcher<sf::Event::MouseButtonPressed>::add(std::bind(&Button::onMouseButtonPressedEvent, this, _1), this);
 		}
 
@@ -194,21 +194,21 @@ namespace gui {
 		}
 	}
 
-	void Button::onMouseEnterEvent(const sf::Event& event)
+	void Button::onMouseEnteredEvent(const sf::Event& event)
 	{
 		if (isMouseOver() && !isActive())
 		{
 			setActive(true);
-			event::MouseEnterEvent::onMouseEnterEvent(event);
+			event::MouseEnteredEvent::onMouseEnteredEvent(event);
 		}
 	}
 
-	void Button::onMouseExitEvent(const sf::Event& event)
+	void Button::onMouseLeftEvent(const sf::Event& event)
 	{
 		if (!isMouseOver() && isActive())
 		{
 			setActive(false);
-			event::MouseExitEvent::onMouseExitEvent(event);
+			event::MouseLeftEvent::onMouseLeftEvent(event);
 		}
 	}
 

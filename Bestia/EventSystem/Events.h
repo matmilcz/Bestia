@@ -24,23 +24,23 @@ namespace event {
 		event_fcn_t m_onMouseButtonPressedEvent;
 	};
 
-	class MouseEnterEvent : public virtual EventCaller
+	class MouseEnteredEvent : public virtual EventCaller
 	{
 	public:
-		void setOnMouseEnterEvent(const event_fcn_t& eventFcn);
-		virtual void onMouseEnterEvent(const sf::Event& event);
+		void setOnMouseEnteredEvent(const event_fcn_t& eventFcn);
+		virtual void onMouseEnteredEvent(const sf::Event& event);
 
 	private:
-		event_fcn_t m_onMouseEnterEvent;
+		event_fcn_t m_onMouseEnteredEvent;
 	};
 
-	class MouseExitEvent : public virtual EventCaller
+	class MouseLeftEvent : public virtual EventCaller
 	{
 	public:
-		void setOnMouseExitEvent(const event_fcn_t& eventFcn);
-		virtual void onMouseExitEvent(const sf::Event& event);
+		void setOnMouseLeftEvent(const event_fcn_t& eventFcn);
+		virtual void onMouseLeftEvent(const sf::Event& event);
 
 	private:
-		event_fcn_t m_onMouseExitEvent;
+		event_fcn_t m_onMouseLeftEvent;
 	};
 }}

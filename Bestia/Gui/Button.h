@@ -27,8 +27,8 @@ namespace gui {
 	class Button : 
 		public sf::Drawable, 
 		public event::MouseButtonPressedEvent,
-		public event::MouseEnterEvent,
-		public event::MouseExitEvent
+		public event::MouseEnteredEvent,
+		public event::MouseLeftEvent
 	{
 	public:
 		Button();
@@ -49,8 +49,8 @@ namespace gui {
 		void setActive(const bool isActive);
 
 		virtual void onMouseButtonPressedEvent(const sf::Event& event) override;
-		virtual void onMouseEnterEvent(const sf::Event& event) override;
-		virtual void onMouseExitEvent(const sf::Event& event) override;
+		virtual void onMouseEnteredEvent(const sf::Event& event) override;
+		virtual void onMouseLeftEvent(const sf::Event& event) override;
 
 		const sf::String& getString() const;
 		const sf::Vector2f& getSize() const;
