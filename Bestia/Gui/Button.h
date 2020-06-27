@@ -9,19 +9,16 @@ namespace bestia {
 namespace gui {
 
 	using uint = unsigned int;
+	using alignment_t = uint;
 
-	enum class EVerticalAlignment
+	enum EStringAlignment : alignment_t
 	{
-		Top,
-		Center,
-		Bottom
-	};
-
-	enum class EHorizontalAlignment
-	{
-		Left,
-		Center,
-		Right,
+#define BIT(bit) (1 << (bit))
+		Top = BIT(1),
+		Bottom = BIT(2),
+		Center = BIT(3),
+		Left = BIT(4),
+		Right = BIT(5)
 	};
 
 	class Button : 
@@ -45,7 +42,7 @@ namespace gui {
 		void setCornerPointCount(uint count);
 		void setFillColor(const sf::Color& color);
 		void setPosition(const sf::Vector2f& position);
-		void setAligment(const EVerticalAlignment& vAlign, const EHorizontalAlignment& hAlign);
+		void setAligment(const alignment_t& alignment);
 		void setActive(const bool isActive);
 
 		virtual void onMouseButtonPressedEvent(const sf::Event& event) override;
@@ -65,12 +62,11 @@ namespace gui {
 	private:
 		sf::Text m_string;
 		sf::extended::RoundedRectangleShape m_roundedRectangle{ sf::Vector2f{50, 30}, 5, 5 };
-		EVerticalAlignment m_vAlign = EVerticalAlignment::Center;	// TODO: keep alignment in one variable
-		EHorizontalAlignment m_hAlign = EHorizontalAlignment::Center;
+		alignment_t m_stringAlign = EStringAlignment::Center;
 		bool m_isActive = false;
 
-		void setVerticalAlignment(const EVerticalAlignment& vAlign);
-		void setHorizontalAlignment(const EHorizontalAlignment& hAlign);
+		void setVerticalAlignment(const alignment_t& vAlign);
+		void setHorizontalAlignment(const alignment_t& hAlign);
 		
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	};

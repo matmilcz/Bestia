@@ -45,19 +45,19 @@ namespace gui {
 	void Button::setString(const sf::String& string)
 	{
 		m_string.setString(string);
-		setAligment(m_vAlign, m_hAlign);
+		setAligment(m_stringAlign);
 	}
 
 	void Button::setFont(const sf::Font& font)
 	{
 		m_string.setFont(font);
-		setAligment(m_vAlign, m_hAlign);
+		setAligment(m_stringAlign);
 	}
 
 	void Button::setCharacterSize(uint size)
 	{
 		m_string.setCharacterSize(size);
-		setAligment(m_vAlign, m_hAlign);
+		setAligment(m_stringAlign);
 	}
 
 	void Button::setStringColor(const sf::Color& color)
@@ -68,7 +68,7 @@ namespace gui {
 	void Button::setSize(const sf::Vector2f& size)
 	{
 		m_roundedRectangle.setSize(size);
-		setAligment(m_vAlign, m_hAlign);
+		setAligment(m_stringAlign);
 	}
 
 	void Button::setCornersRadius(float radius)
@@ -89,13 +89,15 @@ namespace gui {
 	void Button::setPosition(const sf::Vector2f& position)
 	{
 		m_roundedRectangle.setPosition(position);
-		setAligment(m_vAlign, m_hAlign);
+		setAligment(m_stringAlign);
 	}
 
-	void Button::setAligment(const EVerticalAlignment& vAlign, const EHorizontalAlignment& hAlign)
+	void Button::setAligment(const alignment_t& align)
 	{
-		setVerticalAlignment(vAlign);
-		setHorizontalAlignment(hAlign);
+		constexpr alignment_t pureVertical = EStringAlignment::Bottom | EStringAlignment::Top;
+		constexpr alignment_t pureHorizontal = EStringAlignment::Left | EStringAlignment::Right;
+		setVerticalAlignment(align &~ pureHorizontal);
+		setHorizontalAlignment(align &~ pureVertical);
 	}
 
 	void Button::setActive(const bool isActive)
@@ -126,7 +128,7 @@ namespace gui {
 		return m_roundedRectangle.getGlobalBounds().contains(mouseCoordPos.x, mouseCoordPos.y);
 	}
 
-	void Button::setVerticalAlignment(const EVerticalAlignment& vAlign)
+	void Button::setVerticalAlignment(const alignment_t& vAlign)
 	{
 		// TODO: sometimes there correction needed for Y axis... fix rounded rectangle
 		const auto& rectanglePosY = m_roundedRectangle.getPosition().y;
@@ -136,27 +138,30 @@ namespace gui {
 
 		switch (vAlign)
 		{
-		case EVerticalAlignment::Top:
+		case EStringAlignment::Top:
 			m_string.setPosition(sf::Vector2f{ stringPosX, rectanglePosY });
 			break;
-		case EVerticalAlignment::Center:
+		case EStringAlignment::Center:
 		{
 			const auto moveY = (rectangleHeight - m_string.getCharacterSize()) / 2;
 			const auto stringPosY = rectanglePosY + moveY;
 			m_string.setPosition(sf::Vector2f{ stringPosX, stringPosY });
 			break;
 		}
-		case EVerticalAlignment::Bottom:
+		case EStringAlignment::Bottom:
 		{
 			const auto moveY = rectangleHeight - m_string.getCharacterSize();
 			const auto stringPosY = rectanglePosY + moveY;
 			m_string.setPosition(sf::Vector2f{ stringPosX, stringPosY });
 			break;
 		}
+		default:
+			LOG("Wrong vertical alignment for button. Given alignment bitmask: " << vAlign << '\n');
+			break;
 		}
 	}
 
-	void Button::setHorizontalAlignment(const EHorizontalAlignment& hAlign)
+	void Button::setHorizontalAlignment(const alignment_t& hAlign)
 	{
 		constexpr float correctionX = 1; // TODO: there is 1px off to the right... fix rounded rectangle
 		const auto& rectanglePosX = m_roundedRectangle.getPosition().x - correctionX;
@@ -166,23 +171,26 @@ namespace gui {
 
 		switch (hAlign)
 		{
-		case EHorizontalAlignment::Left:
+		case EStringAlignment::Left:
 			m_string.setPosition(sf::Vector2f{ rectanglePosX, stringPosY });
 			break;
-		case EHorizontalAlignment::Center:
+		case EStringAlignment::Center:
 		{
 			const auto moveX = (rectangleWidth - m_string.getLocalBounds().width) / 2;
 			const auto stringPosX = rectanglePosX + moveX;
 			m_string.setPosition(sf::Vector2f{ stringPosX, stringPosY });
 			break;
 		}
-		case EHorizontalAlignment::Right:
+		case EStringAlignment::Right:
 		{
 			const auto moveX = rectangleWidth - m_string.getLocalBounds().width;
 			const auto stringPosX = rectanglePosX + moveX;
 			m_string.setPosition(sf::Vector2f{ stringPosX, stringPosY });
 			break;
 		}
+		default:
+			LOG("Wrong horizontal alignment for button. Given alignment bitmask: " << hAlign << '\n');
+			break;
 		}
 	}
 
