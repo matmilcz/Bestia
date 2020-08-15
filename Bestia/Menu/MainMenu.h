@@ -6,7 +6,7 @@
 #include "Gui/Window.h"
 #include "Utils/CommonFcn.h"
 #include "Utils/Log.h"
-#include "EventSystem/EventDispatcher.h"
+#include "EventSystem/System.h"
 
 namespace bestia {
 

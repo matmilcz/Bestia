@@ -5,18 +5,10 @@ namespace gui {
 
 	Button::Button()
 	{
-		setOnMouseEnteredEvent([this](const sf::Event& event) {
-			setFillColor(sf::Color::Blue);
-			});
-
-		setOnMouseLeftEvent([this](const sf::Event& event) {
-			setFillColor(sf::Color::White);
-			});
-
 		using namespace std::placeholders;
-		event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseEnteredEvent, this, _1), this);
-		event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseLeftEvent, this, _1), this);
-		event::EventDispatcher<sf::Event::MouseButtonPressed>::add(std::bind(&Button::onMouseButtonPressedEvent, this, _1), this);
+		event::system::connect<sf::Event::MouseMoved>(std::bind(&Button::onMouseEnteredEvent, this, _1), this);
+		event::system::connect<sf::Event::MouseMoved>(std::bind(&Button::onMouseLeftEvent, this, _1), this);
+		event::system::connect<sf::Event::MouseButtonPressed>(std::bind(&Button::onMouseButtonPressedEvent, this, _1), this);
 	}
 
 	Button::Button(const Button&) : Button()
@@ -25,8 +17,8 @@ namespace gui {
 
 	Button::~Button()
 	{
-		event::EventDispatcher<sf::Event::MouseMoved>::remove(this);
-		event::EventDispatcher<sf::Event::MouseButtonPressed>::remove(this);
+		event::system::disconnect<sf::Event::MouseMoved>(this);
+		event::system::disconnect<sf::Event::MouseButtonPressed>(this);
 	}
 
 	Button& Button::operator= (const Button& button)
@@ -34,9 +26,9 @@ namespace gui {
 		if (this != &button)
 		{
 			using namespace std::placeholders;
-			event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseEnteredEvent, this, _1), this);
-			event::EventDispatcher<sf::Event::MouseMoved>::add(std::bind(&Button::onMouseLeftEvent, this, _1), this);
-			event::EventDispatcher<sf::Event::MouseButtonPressed>::add(std::bind(&Button::onMouseButtonPressedEvent, this, _1), this);
+			event::system::connect<sf::Event::MouseMoved>(std::bind(&Button::onMouseEnteredEvent, this, _1), this);
+			event::system::connect<sf::Event::MouseMoved>(std::bind(&Button::onMouseLeftEvent, this, _1), this);
+			event::system::connect<sf::Event::MouseButtonPressed>(std::bind(&Button::onMouseButtonPressedEvent, this, _1), this);
 		}
 
 		return *this;
@@ -198,7 +190,7 @@ namespace gui {
 	{
 		if (isMouseOver() && isActive())
 		{
-			event::MouseButtonPressedEvent::onMouseButtonPressedEvent(event);
+			EventCall<sf::Event::EventType::MouseButtonPressed>::eventHandler(event);
 		}
 	}
 
@@ -207,7 +199,7 @@ namespace gui {
 		if (isMouseOver() && !isActive())
 		{
 			setActive(true);
-			event::MouseEnteredEvent::onMouseEnteredEvent(event);
+			setFillColor(sf::Color::Blue);
 		}
 	}
 
@@ -216,7 +208,7 @@ namespace gui {
 		if (!isMouseOver() && isActive())
 		{
 			setActive(false);
-			event::MouseLeftEvent::onMouseLeftEvent(event);
+			setFillColor(sf::Color::White);
 		}
 	}
 

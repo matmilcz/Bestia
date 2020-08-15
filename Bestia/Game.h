@@ -2,7 +2,7 @@
 
 #include "Utils/Log.h"
 #include "AnimatedSprite.h"
-#include "EventSystem/EventDispatcher.h"
+#include "EventSystem/System.h"
 
 namespace bestia {
 
@@ -20,7 +20,7 @@ namespace bestia {
 
 			beast.setScale(sf::Vector2f(5.0f, 5.0f));
 
-			event::EventDispatcher<sf::Event::KeyPressed>::add([&](const sf::Event& event) {
+			event::system::connect<sf::Event::KeyPressed>([&](const sf::Event& event) {
 				if (sf::Keyboard::Escape == event.key.code)
 				{
 					gameState = EGameState::InMenu;
@@ -30,7 +30,7 @@ namespace bestia {
 
 		~Game()
 		{
-			event::EventDispatcher<sf::Event::KeyPressed>::remove(this);
+			event::system::disconnect<sf::Event::KeyPressed>(this);
 		}
 
 		void prepareFrame()

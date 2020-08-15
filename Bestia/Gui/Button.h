@@ -3,7 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include "ExtendedSFML/RoundedRectangleShape.h"
 #include "Window.h"
-#include "EventSystem/EventDispatcher.h"
+#include "EventSystem/System.h"
+#include "Utils/Log.h"
+#include <functional>
 
 namespace bestia {
 namespace gui {
@@ -23,9 +25,7 @@ namespace gui {
 
 	class Button : 
 		public sf::Drawable, 
-		public event::MouseButtonPressedEvent,
-		public event::MouseEnteredEvent,
-		public event::MouseLeftEvent
+		public event::EventCall<sf::Event::EventType::MouseButtonPressed>
 	{
 	public:
 		Button();
@@ -45,9 +45,9 @@ namespace gui {
 		void setAligment(const alignment_t& alignment);
 		void setActive(const bool isActive);
 
-		virtual void onMouseButtonPressedEvent(const sf::Event& event) override;
-		virtual void onMouseEnteredEvent(const sf::Event& event) override;
-		virtual void onMouseLeftEvent(const sf::Event& event) override;
+		void onMouseButtonPressedEvent(const sf::Event& event);
+		void onMouseEnteredEvent(const sf::Event& event);
+		void onMouseLeftEvent(const sf::Event& event);
 
 		const sf::String& getString() const;
 		const sf::Vector2f& getSize() const;

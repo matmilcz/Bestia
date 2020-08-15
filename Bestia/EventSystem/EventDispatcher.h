@@ -2,80 +2,108 @@
 
 #include <vector>
 #include <algorithm>
-#include "Events.h"
+#include "EventCaller.h"
 
 namespace bestia {
 namespace event {
 
-	using event_fcn = std::function<void(const sf::Event& event)>;
-
-	template <sf::Event::EventType TEvent>
-	class EventDispatcher
+	template<typename TEvent>
+	class EventDispatcherBase
 	{
-	public:
-		static void add(const event_fcn& fcn, const EventCaller* eventCaller);
-		static void remove(const EventCaller* eventCaller);
-		static void dispatch(const sf::Event& event);
+		using delegate_t = std::function<void(const TEvent&)>;
+		using delegate_caller_pair_t = std::pair<delegate_t, const EventCaller*>;
 
-	private:
-		EventDispatcher();
-
-		EventDispatcher(const EventDispatcher&) = delete;
-		~EventDispatcher() = default;
-		EventDispatcher& operator= (const EventDispatcher&) = delete;
-
-		static EventDispatcher<TEvent>& get();
-
-		std::vector<std::pair<event_fcn, const EventCaller*>> m_fcn;
-	};
-
-	template<sf::Event::EventType TEvent>
-	void EventDispatcher<TEvent>::add(const event_fcn& fcn, const EventCaller* eventCaller)
-	{
-		EventDispatcher<TEvent>::get().m_fcn.push_back({ fcn, eventCaller });
-	}
-
-	template<sf::Event::EventType TEvent>
-	void EventDispatcher<TEvent>::remove(const EventCaller* eventCaller)
-	{
-		auto& dispatcher = EventDispatcher<TEvent>::get();
-
-		dispatcher.m_fcn.erase(
-			std::remove_if(
-				dispatcher.m_fcn.begin(), dispatcher.m_fcn.end(),
-				[&eventCaller](const std::pair<event_fcn, const EventCaller*>& pair) { return pair.second == eventCaller; }),
-			dispatcher.m_fcn.end()
-		);
-	}
-
-	template<sf::Event::EventType TEvent>
-	void EventDispatcher<TEvent>::dispatch(const sf::Event& event)
-	{
-		try
+	protected:
+		void dispatch(const TEvent& event)
 		{
-			for (const auto& it_fcn : EventDispatcher<TEvent>::get().m_fcn)
+			try
 			{
-				(it_fcn.first)(event);
+				for (const auto& listener : m_eventListeners)
+				{
+					listener.first(event);
+				}
+			}
+			catch (const std::bad_function_call&)
+			{
+				LOG("WRN: Dispatcher not set for event: " << event.type << "  Events in queue: " << m_eventListeners.size() << '\n');
 			}
 		}
-		catch (const std::bad_function_call&)
+
+		void add(const delegate_t& delegate, const EventCaller* caller)
 		{
-			LOG("WRN: Dispatcher not set for event: " << TEvent << "  " << EventDispatcher<TEvent>::get().m_fcn.size() << '\n');
+			m_eventListeners.push_back(delegate_caller_pair_t{ delegate, caller });
 		}
-	}
 
-	template<sf::Event::EventType TEvent>
-	EventDispatcher<TEvent>::EventDispatcher()
-	{
-		constexpr size_t defaultCapacity = 64;
-		m_fcn.reserve(defaultCapacity);
-	}
+		void remove(const EventCaller* caller)
+		{
+			m_eventListeners.erase(
+				std::remove_if(
+					m_eventListeners.begin(), m_eventListeners.end(),
+					[&caller](const delegate_caller_pair_t& pair) { return pair.second == caller; }),
+				m_eventListeners.end()
+			);
+		}
 
-	template<sf::Event::EventType TEvent>
-	EventDispatcher<TEvent>& EventDispatcher<TEvent>::get()
+		void reserve(const size_t& capacity)
+		{
+			m_eventListeners.reserve(capacity);
+		}
+
+	private:
+		std::vector<delegate_caller_pair_t> m_eventListeners;
+	};
+
+	template<const sf::Event::EventType TEventType>
+	class EventSFMLDispatcher : public EventDispatcherBase<sf::Event>
 	{
-		static EventDispatcher<TEvent> eventDispatcher;
-		return eventDispatcher;
-	}
+		using delegate_t = std::function<void(const sf::Event&)>;
+
+	public:
+		static void add(const delegate_t& delegate, const EventCaller* caller)
+		{
+			get().EventDispatcherBase<sf::Event>::add(delegate, caller);
+		}
+
+		static void remove(const EventCaller* caller)
+		{
+			get().EventDispatcherBase<sf::Event>::remove(caller);
+		}
+
+		static void print()
+		{
+			get().EventDispatcherBase<sf::Event>::print();
+		}
+
+		static void dispatch(const sf::Event& event)
+		{
+			get().EventDispatcherBase<sf::Event>::dispatch(event);
+		}
+
+	private:
+		EventSFMLDispatcher()
+		{
+			constexpr size_t largeCapacity = 64;
+			constexpr size_t smallCapacity = 4;
+
+			switch (TEventType)
+			{
+			case sf::Event::MouseMoved:
+				reserve(largeCapacity);
+				break;
+			default:
+				reserve(smallCapacity);
+				break;
+			}
+		}
+		EventSFMLDispatcher(const EventSFMLDispatcher&) = delete;
+		~EventSFMLDispatcher() = default;
+		EventSFMLDispatcher& operator= (const EventSFMLDispatcher&) = delete;
+
+		static EventSFMLDispatcher& get()
+		{
+			static EventSFMLDispatcher eventDispatcher;
+			return eventDispatcher;
+		}
+	};
 
 }}

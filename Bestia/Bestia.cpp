@@ -1,7 +1,7 @@
 ﻿#include <memory>
 #include "Menu/MainMenu.h"
 #include "Game.h"
-#include "EventSystem/EventHandler.h"
+#include "EventSystem/System.h"
 
 int main(int argc, char* argv[])
 {
@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     {
         while (gui::Window::pollEvent(event))
         {
-            event::handleEvent(event);
+            event::system::handleEvent(event);
         }
 
         gui::Window::clear();
