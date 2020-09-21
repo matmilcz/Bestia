@@ -11,6 +11,7 @@ namespace timer {
 
 	Timer::~Timer()
 	{
+		stop();
 		m_timerThread.join();
 	}
 
