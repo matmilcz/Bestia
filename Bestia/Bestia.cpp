@@ -14,13 +14,9 @@ int main(int argc, char* argv[])
     std::unique_ptr<MainMenu> mainMenu;
     std::unique_ptr<Game> game;
 
-    sf::Event event;
     while (gui::Window::isOpen())
     {
-        while (gui::Window::pollEvent(event))
-        {
-            event::system::handleEvent(event);
-        }
+        event::system::handleEvents();
 
         gui::Window::clear();
 

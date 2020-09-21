@@ -1,4 +1,5 @@
 #include "Timer.h"
+#include "Event.h"
 
 namespace bestia {
 namespace event {
@@ -24,7 +25,7 @@ namespace timer {
 
 			while (!m_cv.wait_for(uniqueLock, m_interval, [this]() { return !m_isEnabled; }))
 			{
-				// TODO: send timeout event
+				bestia::event::system::EventQueue<TimerTimeoutEvent>::push({ this });
 				std::this_thread::sleep_for(m_interval);
 			}
 			});

@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include "EventCaller.h"
+#include "Event.h"
 
 namespace bestia {
 namespace event {
@@ -10,10 +11,10 @@ namespace event {
 	template<typename TEvent>
 	class EventDispatcherBase
 	{
+	protected:
 		using delegate_t = std::function<void(const TEvent&)>;
 		using delegate_caller_pair_t = std::pair<delegate_t, const EventCaller*>;
 
-	protected:
 		void dispatch(const TEvent& event)
 		{
 			try
@@ -25,7 +26,7 @@ namespace event {
 			}
 			catch (const std::bad_function_call&)
 			{
-				LOG("WRN: Dispatcher not set for event: " << event.type << "  Events in queue: " << m_eventListeners.size() << '\n');
+				LOG("WRN: Dispatcher not set for event: " /*<< event.type*/ << "  Events in queue: " << m_eventListeners.size() << '\n');
 			}
 		}
 
@@ -51,6 +52,43 @@ namespace event {
 
 	private:
 		std::vector<delegate_caller_pair_t> m_eventListeners;
+	};
+
+	template <typename TEvent>
+	class EventBestiaDispatcher : public EventDispatcherBase<TEvent>
+	{
+	public:
+		static void add(const delegate_t& delegate, const EventCaller* caller)
+		{
+			get().EventDispatcherBase<TEvent>::add(delegate, caller);
+		}
+
+		static void remove(const EventCaller* caller)
+		{
+			get().EventDispatcherBase<TEvent>::remove(caller);
+		}
+
+		static void print()
+		{
+			get().EventDispatcherBase<TEvent>::print();
+		}
+		
+		static void dispatch(const TEvent& event)
+		{
+			get().EventDispatcherBase<TEvent>::dispatch(event);
+		}
+
+	private:
+		EventBestiaDispatcher() = default;
+		EventBestiaDispatcher(const EventBestiaDispatcher&) = delete;
+		~EventBestiaDispatcher() = default;
+		EventBestiaDispatcher& operator= (const EventBestiaDispatcher&) = delete;
+
+		static EventBestiaDispatcher& get()
+		{
+			static EventBestiaDispatcher eventDispatcher;
+			return eventDispatcher;
+		}
 	};
 
 	template<const sf::Event::EventType TEventType>

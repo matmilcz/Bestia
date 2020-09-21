@@ -1,4 +1,5 @@
 #include "System.h"
+#include "Gui/Window.h"
 
 namespace bestia {
 namespace event {
@@ -26,6 +27,17 @@ namespace system {
 			LOG("INF: Unhandled event: " << eventName[event.type] << '\n');
 			break;
 		}
+	}
+
+	void handleEvents()
+	{
+		sf::Event event;
+		while (gui::Window::pollEvent(event))
+		{
+			event::system::handleEvent(event);
+		}
+
+		handleEvent<TimerTimeoutEvent>();
 	}
 
 }}}
