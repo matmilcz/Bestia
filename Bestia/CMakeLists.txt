@@ -15,6 +15,7 @@ find_package(SFML 2.5 COMPONENTS graphics window audio system REQUIRED)
 # Add source to this project's executable.
 file(GLOB SRCFILES 
 	*.cpp 
+	Animation/*.cpp
 	Menu/*.cpp
 	EventSystem/*.cpp
 	Brain/*.cpp
@@ -23,7 +24,8 @@ file(GLOB SRCFILES
 	ExtendedSFML/*.cpp)
 
 file(GLOB INCFILES 
-	*.h 
+	*.h
+	Animation/*.h
 	Menu/*.h
 	EventSystem/*.h
 	Brain/*.h

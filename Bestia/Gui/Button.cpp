@@ -5,6 +5,16 @@ namespace gui {
 
 	Button::Button()
 	{
+		EventCallSFML<sf::Event::MouseEntered>::eventHandler = [this](const sf::Event&) {
+			setActive(true);
+			setFillColor(sf::Color::Blue);
+		};
+
+		EventCallSFML<sf::Event::MouseLeft>::eventHandler = [this](const sf::Event&) {
+			setActive(false);
+			setFillColor(sf::Color::White);
+		};
+
 		using namespace std::placeholders;
 		event::system::connect<sf::Event::MouseMoved>(std::bind(&Button::onMouseEnteredEvent, this, _1), this);
 		event::system::connect<sf::Event::MouseMoved>(std::bind(&Button::onMouseLeftEvent, this, _1), this);
@@ -190,7 +200,7 @@ namespace gui {
 	{
 		if (isMouseOver() && isActive())
 		{
-			EventCall<sf::Event::EventType::MouseButtonPressed>::eventHandler(event);
+			EventCallSFML<sf::Event::MouseButtonPressed>::eventHandler(event);
 		}
 	}
 
@@ -198,8 +208,7 @@ namespace gui {
 	{
 		if (isMouseOver() && !isActive())
 		{
-			setActive(true);
-			setFillColor(sf::Color::Blue);
+			EventCallSFML<sf::Event::MouseEntered>::eventHandler(event);
 		}
 	}
 
@@ -207,8 +216,7 @@ namespace gui {
 	{
 		if (!isMouseOver() && isActive())
 		{
-			setActive(false);
-			setFillColor(sf::Color::White);
+			EventCallSFML<sf::Event::MouseLeft>::eventHandler(event);
 		}
 	}
 

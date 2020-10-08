@@ -26,7 +26,7 @@ namespace bestia {
 		}
 
 		m_mainList[0].setString("NEW GAME");
-		m_mainList[0].EventCall<sf::Event::MouseButtonPressed>::eventHandler =
+		m_mainList[0].EventCallSFML<sf::Event::MouseButtonPressed>::eventHandler =
 			[this](const sf::Event& event) { m_gameState = EGameState::InGame; };
 
 		m_mainList[1].setString("OPTIONS");
@@ -34,14 +34,14 @@ namespace bestia {
 		m_mainList[2].setString("HOW TO PLAY");
 
 		m_mainList[3].setString("CREDITS");
-		m_mainList[3].EventCall<sf::Event::MouseButtonPressed>::eventHandler =
+		m_mainList[3].EventCallSFML<sf::Event::MouseButtonPressed>::eventHandler =
 			[](const sf::Event& event) {
 			LOG("Credits: Mlody i Zosia\n" <<
 				"Attrribution: \n" <<
 				"Background photo created by freepik - www.freepik.com\n"); };
 
 		m_mainList[4].setString("EXIT");
-		m_mainList[4].EventCall<sf::Event::MouseButtonPressed>::eventHandler =
+		m_mainList[4].EventCallSFML<sf::Event::MouseButtonPressed>::eventHandler =
 			[](const sf::Event& event) { gui::Window::close(); };
 		
 		m_mainList.setPosition(sf::Vector2f{ -125.f, -200.f });

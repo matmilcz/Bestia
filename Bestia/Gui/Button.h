@@ -25,7 +25,9 @@ namespace gui {
 
 	class Button : 
 		public sf::Drawable, 
-		public event::EventCall<sf::Event::EventType::MouseButtonPressed>
+		public event::EventCallSFML<sf::Event::MouseButtonPressed>,
+		public event::EventCallSFML<sf::Event::MouseEntered>,
+		public event::EventCallSFML<sf::Event::MouseLeft>
 	{
 	public:
 		Button();

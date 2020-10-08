@@ -4,6 +4,7 @@
 #include <chrono>
 #include <condition_variable>
 #include <mutex>
+#include "EventCaller.h"
 
 namespace bestia {
 namespace event {
@@ -11,7 +12,7 @@ namespace timer {
 
 	constexpr size_t DEFAULT_INTERVAL = 1000;
 
-	class Timer
+	class Timer : public EventCaller
 	{
 	public:
 		Timer(const size_t& interval);
