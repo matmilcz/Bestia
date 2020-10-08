@@ -18,17 +18,21 @@ namespace timer {
 
 	void Timer::start()
 	{
-		m_isEnabled = true;
+		if (!m_isEnabled)
+		{
+			m_isEnabled = true;
 
-		m_timerThread = std::thread([this]() {
-			std::unique_lock<std::mutex> uniqueLock(m_mutex);
+			m_timerThread = std::thread([this]() {
+				std::unique_lock<std::mutex> uniqueLock(m_mutex);
 
-			while (!m_cv.wait_for(uniqueLock, m_interval, [this]() { return !m_isEnabled; }))
-			{
-				bestia::event::system::EventQueue<TimerTimeoutEvent>::push({ this });
-				std::this_thread::sleep_for(m_interval);
-			}
-			});
+				while (!m_cv.wait_for(uniqueLock, m_interval, [this]() { return !m_isEnabled; }))
+				{
+					bestia::event::system::EventQueue<TimerTimeoutEvent>::push({ this });
+					std::this_thread::sleep_for(m_interval);
+				}
+				});
+		}
+		
 	}
 
 	void Timer::stop()
