@@ -11,5 +11,10 @@ namespace event {
 		timer::Timer* sender;
 	};
 
+	struct ViewMoveEvent
+	{
+
+	};
+
 }
 }

@@ -9,7 +9,7 @@
 namespace bestia {
 namespace animation {
 
-	class AnimatedSprite : public sf::Sprite
+	class AnimatedSprite : public sf::Sprite, public event::EventCaller
 	{
 	public:
 		AnimatedSprite(const Animation& animation, const event::timer::Timer& frameUpdateTimer);

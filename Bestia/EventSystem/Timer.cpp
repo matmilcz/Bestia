@@ -27,7 +27,7 @@ namespace timer {
 
 				while (!m_cv.wait_for(uniqueLock, m_interval, [this]() { return !m_isEnabled; }))
 				{
-					bestia::event::system::EventQueue<TimerTimeoutEvent>::push({ this });
+					event::system::EventQueue<TimerTimeoutEvent>::push({ this });
 					std::this_thread::sleep_for(m_interval);
 				}
 				});

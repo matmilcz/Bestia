@@ -15,7 +15,7 @@ namespace animation {
 
 	AnimatedSprite::~AnimatedSprite()
 	{
-		event::system::disconnect<event::TimerTimeoutEvent>(&m_frameUpdateTimer);
+		event::system::disconnect<event::TimerTimeoutEvent>(this);
 	}
 
 	void AnimatedSprite::setFrame(unsigned const frameIdx)
@@ -31,12 +31,12 @@ namespace animation {
 			{
 				updateFrame();
 			}
-			}, &m_frameUpdateTimer);
+			}, this);
 	}
 
 	void AnimatedSprite::stop()
 	{
-		event::system::disconnect<event::TimerTimeoutEvent>(&m_frameUpdateTimer);
+		event::system::disconnect<event::TimerTimeoutEvent>(this);
 	}
 
 	void AnimatedSprite::updateFrame()
