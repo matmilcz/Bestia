@@ -36,9 +36,9 @@ namespace bestia {
 		cloudSprites[2]->move(sf::Vector2f{ -600.f, -50.f });
 
 		auto background = std::make_shared<scene::BackgroundLayer>();
-		background->objects.push_back(cloudSprites[0]);
-		background->objects.push_back(cloudSprites[1]);
 		background->objects.push_back(cloudSprites[2]);
+		background->objects.push_back(cloudSprites[1]);
+		background->objects.push_back(cloudSprites[0]);
 
 		event::system::connect<event::TimerTimeoutEvent>([this, cloudSprites](const event::TimerTimeoutEvent& e) {
 			if (e.sender == &g_timer60tpc)
