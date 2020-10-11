@@ -10,7 +10,7 @@
 
 namespace bestia {
 
-	class MainMenu
+	class MainMenu : public event::EventCaller
 	{
 	public:
 		MainMenu(EGameState& gameState);

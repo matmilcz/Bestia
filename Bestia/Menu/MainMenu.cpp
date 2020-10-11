@@ -1,6 +1,8 @@
 #include "MainMenu.h"
 #include <utility>
 
+extern bestia::event::timer::Timer g_timer60tpc;
+
 namespace bestia {
 
 	MainMenu::MainMenu(EGameState& gameState) : m_gameState(gameState)
@@ -37,6 +39,24 @@ namespace bestia {
 		background->objects.push_back(cloudSprites[0]);
 		background->objects.push_back(cloudSprites[1]);
 		background->objects.push_back(cloudSprites[2]);
+
+		event::system::connect<event::TimerTimeoutEvent>([this, cloudSprites](const event::TimerTimeoutEvent& e) {
+			if (e.sender == &g_timer60tpc)
+			{
+				static int dir[3] = { -1, -1, 1 };
+				sf::Vector2f bounds[3] = { {200.f, -400.f}, {0.f, -900.f}, {0.f, -700.f} }; // this implementation force A > B for { A, B }
+
+				for (unsigned i = 0; i < 3; ++i)
+				{
+					if (cloudSprites[i]->getPosition().x > bounds[i].x || cloudSprites[i]->getPosition().x < bounds[i].y)
+					{
+						dir[i] *= -1;
+					}
+
+					cloudSprites[i]->move(sf::Vector2f{ dir[i] * 0.5f, 0 });
+				}
+			}
+			}, this);
 
 		return background;
 	}

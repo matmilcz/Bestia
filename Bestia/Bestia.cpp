@@ -3,6 +3,8 @@
 #include "Game.h"
 #include "EventSystem/System.h"
 
+bestia::event::timer::Timer g_timer60tpc(15); // 60 ticks per second
+
 int main(int argc, char* argv[])
 {
     using namespace bestia;
@@ -10,6 +12,7 @@ int main(int argc, char* argv[])
     EGameState gameState = EGameState::InMenu;
 
     sf::Clock frameClock;
+    g_timer60tpc.start();
 
     std::unique_ptr<MainMenu> mainMenu;
     std::unique_ptr<Game> game;
