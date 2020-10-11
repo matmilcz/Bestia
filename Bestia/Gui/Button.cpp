@@ -5,14 +5,16 @@ namespace gui {
 
 	Button::Button()
 	{
+		setFillColor(m_defaultColor);
+
 		EventCallSFML<sf::Event::MouseEntered>::eventHandler = [this](const sf::Event&) {
 			setActive(true);
-			setFillColor(sf::Color::Blue);
+			setFillColor(m_mouseOverColor);
 		};
 
 		EventCallSFML<sf::Event::MouseLeft>::eventHandler = [this](const sf::Event&) {
 			setActive(false);
-			setFillColor(sf::Color::White);
+			setFillColor(m_defaultColor);
 		};
 
 		using namespace std::placeholders;
@@ -69,28 +71,29 @@ namespace gui {
 
 	void Button::setSize(const sf::Vector2f& size)
 	{
-		m_roundedRectangle.setSize(size);
+		m_buttonShape.setSize(size);
 		setAligment(m_stringAlign);
-	}
-
-	void Button::setCornersRadius(float radius)
-	{
-		m_roundedRectangle.setCornersRadius(radius);
-	}
-
-	void Button::setCornerPointCount(uint count)
-	{
-		m_roundedRectangle.setCornerPointCount(count);
 	}
 
 	void Button::setFillColor(const sf::Color& color)
 	{
-		m_roundedRectangle.setFillColor(color);
+		m_buttonShape.setFillColor(color);
+	}
+
+	void Button::setDefaultColor(const sf::Color& color)
+	{
+		m_defaultColor = color;
+		setFillColor(m_defaultColor);
+	}
+
+	void Button::setMouseOverColor(const sf::Color& color)
+	{
+		m_mouseOverColor = color;
 	}
 
 	void Button::setPosition(const sf::Vector2f& position)
 	{
-		m_roundedRectangle.setPosition(position);
+		m_buttonShape.setPosition(position);
 		setAligment(m_stringAlign);
 	}
 
@@ -114,12 +117,12 @@ namespace gui {
 
 	const sf::Vector2f& Button::getSize() const
 	{
-		return m_roundedRectangle.getSize();
+		return m_buttonShape.getSize();
 	}
 
 	const sf::Vector2f& Button::getPosition() const
 	{
-		return m_roundedRectangle.getPosition();
+		return m_buttonShape.getPosition();
 	}
 
 	bool Button::isMouseOver(const sf::RenderWindow& window) const
@@ -127,14 +130,14 @@ namespace gui {
 		auto mousePixelPos = sf::Mouse::getPosition(window);
 		auto mouseCoordPos = window.mapPixelToCoords(mousePixelPos);
 
-		return m_roundedRectangle.getGlobalBounds().contains(mouseCoordPos.x, mouseCoordPos.y);
+		return m_buttonShape.getGlobalBounds().contains(mouseCoordPos.x, mouseCoordPos.y);
 	}
 
 	void Button::setVerticalAlignment(const alignment_t& vAlign)
 	{
-		// TODO: sometimes there correction needed for Y axis... fix rounded rectangle
-		const auto& rectanglePosY = m_roundedRectangle.getPosition().y;
-		const auto rectangleHeight = m_roundedRectangle.getLocalBounds().height - m_roundedRectangle.getCornersRadius();
+		constexpr float correctionY = 10; // TODO: why?
+		const auto& rectanglePosY = m_buttonShape.getPosition().y - correctionY;
+		const auto rectangleHeight = m_buttonShape.getLocalBounds().height + correctionY;
 
 		const auto& stringPosX = m_string.getPosition().x;
 
@@ -165,9 +168,9 @@ namespace gui {
 
 	void Button::setHorizontalAlignment(const alignment_t& hAlign)
 	{
-		constexpr float correctionX = 1; // TODO: there is 1px off to the right... fix rounded rectangle
-		const auto& rectanglePosX = m_roundedRectangle.getPosition().x - correctionX;
-		const auto rectangleWidth = m_roundedRectangle.getLocalBounds().width;
+		constexpr float correctionX = 2; // TODO: why?
+		const auto& rectanglePosX = m_buttonShape.getPosition().x - correctionX;
+		const auto rectangleWidth = m_buttonShape.getLocalBounds().width;
 
 		const auto& stringPosY = m_string.getPosition().y;
 
@@ -222,7 +225,7 @@ namespace gui {
 
 	void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		target.draw(m_roundedRectangle);
+		target.draw(m_buttonShape);
 		target.draw(m_string);
 	}
 

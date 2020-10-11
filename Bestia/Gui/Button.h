@@ -40,9 +40,9 @@ namespace gui {
 		void setCharacterSize(uint size);
 		void setStringColor(const sf::Color& color);
 		void setSize(const sf::Vector2f& size);
-		void setCornersRadius(float radius);
-		void setCornerPointCount(uint count);
 		void setFillColor(const sf::Color& color);
+		void setDefaultColor(const sf::Color& color);
+		void setMouseOverColor(const sf::Color& color);
 		void setPosition(const sf::Vector2f& position);
 		void setAligment(const alignment_t& alignment);
 		void setActive(const bool isActive);
@@ -63,8 +63,10 @@ namespace gui {
 
 	private:
 		sf::Text m_string;
-		sf::extended::RoundedRectangleShape m_roundedRectangle{ sf::Vector2f{50, 30}, 5, 5 };
+		sf::RectangleShape m_buttonShape{ sf::Vector2f{50, 30} };
 		alignment_t m_stringAlign = EStringAlignment::Center;
+		sf::Color m_defaultColor = sf::Color::White;
+		sf::Color m_mouseOverColor = sf::Color::Blue;
 		bool m_isActive = false;
 
 		void setVerticalAlignment(const alignment_t& vAlign);

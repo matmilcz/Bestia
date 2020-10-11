@@ -66,13 +66,14 @@ namespace bestia {
 		for (auto& it_list : *m_mainSelectionList)
 		{
 			it_list.setFont(m_font);
-			it_list.setStringColor(sf::Color::Black);
+			it_list.setDefaultColor(sf::Color{ 10, 20, 180, 180 });
+			it_list.setMouseOverColor(sf::Color{ 10, 20, 70, 180 });
+			it_list.setStringColor(sf::Color{ 190, 190, 190, 240 });
 			it_list.setCharacterSize(fontSize);
 			it_list.setSize(sf::Vector2f{ 250.f, 70.f });
 		}
 
 		(*m_mainSelectionList)[0].setString("NEW GAME");
-		(*m_mainSelectionList)[0].setFillColor(sf::Color{10, 20, 180, 180});
 		(*m_mainSelectionList)[0].EventCallSFML<sf::Event::MouseButtonPressed>::eventHandler =
 			[this](const sf::Event& event) { m_gameState = EGameState::InGame; };
 
