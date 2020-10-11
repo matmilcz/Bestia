@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "EventSystem/System.h"
 
-bestia::event::timer::Timer g_timer60tpc(15); // 60 ticks per second
+extern bestia::event::timer::Timer g_timer60tpc;
 
 int main(int argc, char* argv[])
 {
