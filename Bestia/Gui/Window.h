@@ -16,7 +16,7 @@ namespace gui {
 
         static inline void setView(const sf::View& view);
 
-        static inline void clear();
+        static inline void clear(const sf::Color& color = sf::Color(0, 0, 0, 255));
         static inline void close();
         static inline void draw(const sf::Drawable& drawable, const sf::RenderStates& states = sf::RenderStates::Default);
         static inline void display();
@@ -46,9 +46,9 @@ namespace gui {
         get().m_renderWindow.setView(view);
     }
 
-    inline void Window::clear()
+    inline void Window::clear(const sf::Color& color)
     {
-        get().m_renderWindow.clear();
+        get().m_renderWindow.clear(color);
     }
 
     inline void Window::close()

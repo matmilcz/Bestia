@@ -26,8 +26,12 @@ namespace bestia {
 		sf::View m_view = sf::View{ sf::Vector2f{ 0.0f, 0.0f }, sf::Vector2f{ gui::Window::getSize() } };
 		scene::Scene m_scene;
 
+		sf::Texture m_cloudTexture;
+
 		EGameState& m_gameState;
 
+		std::shared_ptr<scene::BackgroundLayer> prepareBackgroundLayer();
+		std::shared_ptr<scene::GuiLayer> prepareGuiLayer();
 		void prepareMainSelectionList();
 	};
 

@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
     {
         event::system::handleEvents();
 
-        gui::Window::clear();
+        gui::Window::clear(sf::Color(40, 150, 210, 255));
 
         switch (gameState)
         {

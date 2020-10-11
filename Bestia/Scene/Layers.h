@@ -12,6 +12,8 @@ namespace scene {
 	{
 	public:
 		using object_t = std::shared_ptr<sf::Drawable>;
+		BackgroundLayer() = default;
+
 		std::vector<object_t> objects;
 
 	private:
