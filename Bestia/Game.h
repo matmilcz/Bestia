@@ -4,6 +4,7 @@
 #include "Animation/Animation.h"
 #include "Animation/AnimatedSprite.h"
 #include "EventSystem/System.h"
+#include "Scene/Scene.h"
 
 namespace bestia {
 
@@ -20,8 +21,8 @@ namespace bestia {
 			beastTexture.loadFromFile("Resources/spritesheets/white_monster.png");
 			std::vector <sf::IntRect> frameRect = { {0, 0, 50, 50}, {50, 0, 50, 50} };
 
-			m_beastAnimation = std::make_unique<animation::Animation>(std::move(beastTexture), std::move(frameRect));
-			m_beastSprite = std::make_unique<animation::AnimatedSprite>(*m_beastAnimation, m_beastTimer);
+			m_beastAnimation = std::make_shared<animation::Animation>(std::move(beastTexture), std::move(frameRect));
+			m_beastSprite = std::make_shared<animation::AnimatedSprite>(m_beastAnimation, m_beastTimer);
 
 			m_beastSprite->setScale(sf::Vector2f(5.0f, 5.0f));
 
@@ -34,6 +35,15 @@ namespace bestia {
 
 			m_beastSprite->start();
 			m_beastTimer.start();
+
+			auto background = std::make_shared<scene::BackgroundLayer>();
+			background->objects.push_back(std::make_shared<sf::CircleShape>(100.f, 20));
+
+			auto front = std::make_shared<scene::FrontLayer>();
+			front->objects.push_back(m_beastSprite);
+
+			m_scene.background = background;
+			m_scene.front = front;
 		}
 
 		~Game()
@@ -45,15 +55,17 @@ namespace bestia {
 		void prepareFrame()
 		{
 			gui::Window::setView(m_view);
-			gui::Window::draw(*m_beastSprite);
+			gui::Window::draw(m_scene);
 		}
 
 	private:
 		sf::View m_view{ sf::Vector2f{ 0.0f, 0.0f }, sf::Vector2f{ gui::Window::getSize() } };
 
 		event::timer::Timer m_beastTimer;
-		std::unique_ptr<animation::Animation> m_beastAnimation;
-		std::unique_ptr<animation::AnimatedSprite> m_beastSprite;
+		std::shared_ptr<animation::Animation> m_beastAnimation;
+		std::shared_ptr<animation::AnimatedSprite> m_beastSprite;
+
+		scene::Scene m_scene;
 
 		EGameState& m_gameState;
 	};

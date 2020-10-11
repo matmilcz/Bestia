@@ -12,7 +12,7 @@ namespace animation {
 	class AnimatedSprite : public sf::Sprite, public event::EventCaller
 	{
 	public:
-		AnimatedSprite(const Animation& animation, const event::timer::Timer& frameUpdateTimer);
+		AnimatedSprite(const std::shared_ptr<Animation> animation, const event::timer::Timer& frameUpdateTimer);
 		AnimatedSprite(const AnimatedSprite&) = delete; // TODO
 		~AnimatedSprite();
 		AnimatedSprite& operator= (const AnimatedSprite&) = delete; // TODO
@@ -22,7 +22,7 @@ namespace animation {
 		void stop();
 
 	private:
-		const Animation& m_animation;
+		const std::shared_ptr<Animation> m_animation;
 		const event::timer::Timer& m_frameUpdateTimer;
 		std::vector<sf::IntRect>::const_iterator m_currFrameIter;
 

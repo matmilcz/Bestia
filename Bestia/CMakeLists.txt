@@ -21,7 +21,8 @@ file(GLOB SRCFILES
 	Brain/*.cpp
 	Utils/*.cpp
 	Gui/*.cpp
-	ExtendedSFML/*.cpp)
+	ExtendedSFML/*.cpp
+	Scene/*.cpp)
 
 file(GLOB INCFILES 
 	*.h
@@ -31,7 +32,8 @@ file(GLOB INCFILES
 	Brain/*.h
 	Utils/*.h
 	Gui/*.h
-	ExtendedSFML/*.h)
+	ExtendedSFML/*.h
+	Scene/*.h)
 
 add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES})
 target_link_libraries(${EXEC_NAME} sfml-main sfml-graphics sfml-window sfml-audio sfml-system)

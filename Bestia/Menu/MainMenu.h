@@ -3,10 +3,10 @@
 #include <SFML/Graphics/View.hpp>
 #include "Gui/DrawableList.h"
 #include "Gui/Button.h"
-#include "Gui/Window.h"
 #include "Utils/CommonFcn.h"
 #include "Utils/Log.h"
 #include "EventSystem/System.h"
+#include "Scene/Scene.h"
 
 namespace bestia {
 
@@ -21,12 +21,14 @@ namespace bestia {
 		void prepareFrame();
 
 	private:
-		gui::DrawableList<gui::Button> m_mainList;
+		std::shared_ptr<gui::DrawableList<gui::Button>> m_mainSelectionList = std::make_shared<gui::DrawableList<gui::Button>>();
+		sf::Font m_font;
+		sf::View m_view = sf::View{ sf::Vector2f{ 0.0f, 0.0f }, sf::Vector2f{ gui::Window::getSize() } };
+		scene::Scene m_scene;
 
 		EGameState& m_gameState;
-		sf::View m_view = sf::View{ sf::Vector2f{ 0.0f, 0.0f }, sf::Vector2f{ gui::Window::getSize() } };
 
-		sf::Font m_font;
+		void prepareMainSelectionList();
 	};
 
 }

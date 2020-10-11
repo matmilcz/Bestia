@@ -3,11 +3,11 @@
 namespace bestia {
 namespace animation {
 
-	AnimatedSprite::AnimatedSprite(const Animation& animation, const event::timer::Timer& frameUpdateTimer) :
+	AnimatedSprite::AnimatedSprite(const std::shared_ptr<Animation> animation, const event::timer::Timer& frameUpdateTimer) :
 		m_animation(animation),
 		m_frameUpdateTimer(frameUpdateTimer)
 	{
-		sf::Sprite::setTexture(m_animation.spritesheet);
+		sf::Sprite::setTexture(m_animation->spritesheet);
 
 		constexpr unsigned initialFrameIdx = 0;
 		setFrame(initialFrameIdx);
@@ -20,7 +20,7 @@ namespace animation {
 
 	void AnimatedSprite::setFrame(unsigned const frameIdx)
 	{
-		m_currFrameIter = m_animation.animationFrames.begin() + frameIdx;
+		m_currFrameIter = m_animation->animationFrames.begin() + frameIdx;
 		sf::Sprite::setTextureRect(*m_currFrameIter);
 	}
 
@@ -43,9 +43,9 @@ namespace animation {
 	{
 		++m_currFrameIter;
 
-		if (m_currFrameIter == m_animation.animationFrames.end())
+		if (m_currFrameIter == m_animation->animationFrames.end())
 		{
-			m_currFrameIter = m_animation.animationFrames.begin();
+			m_currFrameIter = m_animation->animationFrames.begin();
 		}
 
 		sf::Sprite::setTextureRect(*m_currFrameIter);
