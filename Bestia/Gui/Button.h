@@ -6,6 +6,8 @@
 #include "EventSystem/System.h"
 #include "Utils/Log.h"
 #include <functional>
+#include "Animation/FadeEffect.h"
+#include <iostream>
 
 namespace bestia {
 namespace gui {
@@ -27,7 +29,8 @@ namespace gui {
 		public sf::Drawable, 
 		public event::EventCallSFML<sf::Event::MouseButtonPressed>,
 		public event::EventCallSFML<sf::Event::MouseEntered>,
-		public event::EventCallSFML<sf::Event::MouseLeft>
+		public event::EventCallSFML<sf::Event::MouseLeft>,
+		public animation::effect::IFadeEffect
 	{
 	public:
 		Button();
@@ -54,12 +57,16 @@ namespace gui {
 		const sf::String& getString() const;
 		const sf::Vector2f& getSize() const;
 		const sf::Vector2f& getPosition() const;
+		const sf::Color& getFillColor() const;
 
 		inline bool isActive() const
 		{
 			return m_isActive;
 		}
 		bool isMouseOver(const sf::RenderWindow& window = Window::getRenderWindow()) const;
+
+		virtual bool fadeOut(const sf::Uint8 effectSpeed, const sf::Uint8 targetValue = animation::effect::DEFAULT_FADE_OUT_TARGET_VAL) override;
+		virtual bool fadeIn(const sf::Uint8 effectSpeed, const sf::Uint8 targetValue = animation::effect::DEFAULT_FADE_IN_TARGET_VAL) override;
 
 	private:
 		sf::Text m_string;

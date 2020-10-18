@@ -4,6 +4,7 @@
 #include "Gui/DrawableList.h"
 #include "Gui/Button.h"
 #include "Utils/CommonFcn.h"
+#include "Utils/Defs.h"
 #include "Utils/Log.h"
 #include "EventSystem/System.h"
 #include "Scene/Scene.h"

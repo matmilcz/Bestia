@@ -2,6 +2,8 @@
 
 #include "System.h"
 #include "Timer.h"
+#include <functional>
+#include <SFML/Graphics/Transformable.hpp>
 
 namespace bestia {
 namespace event {
@@ -11,9 +13,9 @@ namespace event {
 		timer::Timer* sender;
 	};
 
-	struct ViewMoveEvent
+	struct MoveEffectFinishedEvent
 	{
-
+		sf::Transformable* sender;
 	};
 
 }

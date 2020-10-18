@@ -4,38 +4,42 @@
 #include <algorithm>
 #include "EventCaller.h"
 #include "Event.h"
+#include <iostream>
 
 namespace bestia {
 namespace event {
 
-	template<typename TEvent>
+	template <typename TEvent>
 	class EventDispatcherBase
 	{
 	protected:
 		using delegate_t = std::function<void(const TEvent&)>;
-		using delegate_caller_pair_t = std::pair<delegate_t, const EventCaller*>;
+		using delegate_caller_pair_t = std::pair<delegate_t, const void*>;
 
 		void dispatch(const TEvent& event)
 		{
-			try
-			{
 				for (const auto& listener : m_eventListeners)
 				{
-					listener.first(event);
+					if (typeid(TEvent) == typeid(MoveEffectFinishedEvent))
+						std::cout << "calling listener for object: " << listener.second << "\n";
+					try
+					{
+						listener.first(event);
+					}
+					catch (const std::bad_function_call&)
+					{
+						LOG("WRN: Dispatcher not called for: 0x" << listener.second << "  Events in queue: " << m_eventListeners.size() << '\n');
+					}
 				}
-			}
-			catch (const std::bad_function_call&)
-			{
-				LOG("WRN: Dispatcher not set for event: " /*<< event.type*/ << "  Events in queue: " << m_eventListeners.size() << '\n');
-			}
 		}
 
-		void add(const delegate_t& delegate, const EventCaller* caller)
+		void add(const delegate_t& delegate, const void* caller)
 		{
+			std::cout << "add event listener for: " << std::hex << caller << '\n';
 			m_eventListeners.push_back(delegate_caller_pair_t{ delegate, caller });
 		}
 
-		void remove(const EventCaller* caller)
+		void remove(const void* caller)
 		{
 			m_eventListeners.erase(
 				std::remove_if(
@@ -58,12 +62,12 @@ namespace event {
 	class EventBestiaDispatcher : public EventDispatcherBase<TEvent>
 	{
 	public:
-		static void add(const delegate_t& delegate, const EventCaller* caller)
+		static void add(const delegate_t& delegate, const void* caller)
 		{
 			get().EventDispatcherBase<TEvent>::add(delegate, caller);
 		}
 
-		static void remove(const EventCaller* caller)
+		static void remove(const void* caller)
 		{
 			get().EventDispatcherBase<TEvent>::remove(caller);
 		}
@@ -97,12 +101,12 @@ namespace event {
 		using delegate_t = std::function<void(const sf::Event&)>;
 
 	public:
-		static void add(const delegate_t& delegate, const EventCaller* caller)
+		static void add(const delegate_t& delegate, const void* caller)
 		{
 			get().EventDispatcherBase<sf::Event>::add(delegate, caller);
 		}
 
-		static void remove(const EventCaller* caller)
+		static void remove(const void* caller)
 		{
 			get().EventDispatcherBase<sf::Event>::remove(caller);
 		}

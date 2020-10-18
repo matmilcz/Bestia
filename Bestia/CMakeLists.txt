@@ -35,7 +35,7 @@ file(GLOB INCFILES
 	ExtendedSFML/*.h
 	Scene/*.h)
 
-add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES})
+add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES} "Utils/CommonFcn.cpp" "Animation/MoveEffect.cpp")
 target_link_libraries(${EXEC_NAME} sfml-main sfml-graphics sfml-window sfml-audio sfml-system)
 
 target_include_directories(${EXEC_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

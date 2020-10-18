@@ -1,9 +1,7 @@
 ﻿#include <memory>
 #include "Menu/MainMenu.h"
 #include "Game.h"
-#include "EventSystem/System.h"
-
-extern bestia::event::timer::Timer g_timer60tpc;
+#include "EventSystem/Timer.h"
 
 int main(int argc, char* argv[])
 {
@@ -12,7 +10,7 @@ int main(int argc, char* argv[])
     EGameState gameState = EGameState::InMenu;
 
     sf::Clock frameClock;
-    g_timer60tpc.start();
+    event::timer::Timer::getTimer10ms().start();
 
     std::unique_ptr<MainMenu> mainMenu;
     std::unique_ptr<Game> game;

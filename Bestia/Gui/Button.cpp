@@ -1,4 +1,6 @@
 #include "Button.h"
+#include <algorithm>
+#include "Utils/CommonFcn.h"
 
 namespace bestia {
 namespace gui {
@@ -125,12 +127,75 @@ namespace gui {
 		return m_buttonShape.getPosition();
 	}
 
+	const sf::Color& Button::getFillColor() const
+	{
+		return m_buttonShape.getFillColor();
+	}
+
 	bool Button::isMouseOver(const sf::RenderWindow& window) const
 	{
 		auto mousePixelPos = sf::Mouse::getPosition(window);
 		auto mouseCoordPos = window.mapPixelToCoords(mousePixelPos);
 
 		return m_buttonShape.getGlobalBounds().contains(mouseCoordPos.x, mouseCoordPos.y);
+	}
+
+	bool Button::fadeOut(const sf::Uint8 effectSpeed, const sf::Uint8 targetValue)
+	{
+		sf::Color buttonColor = m_buttonShape.getFillColor();
+		sf::Color stringColor = m_string.getFillColor();
+		sf::Uint8 biggerAlpha = std::max(buttonColor.a, stringColor.a);
+
+		if (biggerAlpha > targetValue)
+		{
+			if (biggerAlpha - targetValue > effectSpeed)
+			{
+				buttonColor.a = subSafely(buttonColor.a, effectSpeed);
+				stringColor.a = subSafely(stringColor.a, effectSpeed);
+			}
+			else
+			{
+				buttonColor.a = subSafely<sf::Uint8>(buttonColor.a, biggerAlpha - targetValue);
+				stringColor.a = subSafely<sf::Uint8>(stringColor.a, biggerAlpha - targetValue);
+			}
+
+			m_buttonShape.setFillColor(buttonColor);
+			m_string.setFillColor(stringColor);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	bool Button::fadeIn(const sf::Uint8 effectSpeed, const sf::Uint8 targetValue)
+	{
+		sf::Color buttonColor = m_buttonShape.getFillColor();
+		sf::Color stringColor = m_string.getFillColor();
+		sf::Uint8 smallerAlpha = std::min(buttonColor.a, stringColor.a);
+
+		if (smallerAlpha < targetValue)
+		{
+			if (targetValue - smallerAlpha > effectSpeed)
+			{
+				buttonColor.a = addSafely(buttonColor.a, effectSpeed);
+				stringColor.a = addSafely(stringColor.a, effectSpeed);
+			}
+			else
+			{
+				buttonColor.a = addSafely<sf::Uint8>(buttonColor.a, targetValue - smallerAlpha);
+				stringColor.a = addSafely<sf::Uint8>(stringColor.a, targetValue - smallerAlpha);
+			}
+
+			m_buttonShape.setFillColor(buttonColor);
+			m_string.setFillColor(stringColor);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	void Button::setVerticalAlignment(const alignment_t& vAlign)

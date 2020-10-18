@@ -1,7 +1,8 @@
 #include "MainMenu.h"
 #include <utility>
-
-extern bestia::event::timer::Timer g_timer60tpc;
+#include <array>
+#include "Animation/FadeEffect.h"
+#include "Animation/MoveEffect.h"
 
 namespace bestia {
 
@@ -23,8 +24,9 @@ namespace bestia {
 	std::shared_ptr<scene::BackgroundLayer> MainMenu::prepareBackgroundLayer()
 	{
 		m_cloudTexture.loadFromFile("Resources/spritesheets/clouds.png");
+		constexpr uint numOfClouds = 3;
 
-		std::shared_ptr<sf::Sprite> cloudSprites[3] =
+		std::array<std::shared_ptr<sf::Sprite>, numOfClouds> cloudSprites =
 		{
 			std::make_shared<sf::Sprite>(m_cloudTexture, sf::IntRect{ 0, 0, 580, 280 }),
 			std::make_shared<sf::Sprite>(m_cloudTexture, sf::IntRect{ 0, 300, 800, 330 }),
@@ -40,23 +42,88 @@ namespace bestia {
 		background->objects.push_back(cloudSprites[1]);
 		background->objects.push_back(cloudSprites[0]);
 
-		event::system::connect<event::TimerTimeoutEvent>([this, cloudSprites](const event::TimerTimeoutEvent& e) {
-			if (e.sender == &g_timer60tpc)
+		std::array<std::function<void(const event::MoveEffectFinishedEvent&)>, numOfClouds> cloudRoutines;
+
+		cloudRoutines[0] = [=](const event::MoveEffectFinishedEvent& event) {
+			std::cout << "cloud0 Routine sender:" << event.sender << " sprite0: " << (sf::Transformable*)&*cloudSprites[0] << "\n";
+			if (event.sender == (sf::Transformable*)&*cloudSprites[0])
 			{
-				static int dir[3] = { -1, -1, 1 };
-				sf::Vector2f bounds[3] = { {200.f, -400.f}, {0.f, -900.f}, {0.f, -700.f} }; // this implementation force A > B for { A, B }
-
-				for (unsigned i = 0; i < 3; ++i)
+				
+				constexpr float bounds[] = { -400.f, 200.f };
+				auto object = event.sender;
+				if (object->getPosition().x <= bounds[0])
 				{
-					if (cloudSprites[i]->getPosition().x > bounds[i].x || cloudSprites[i]->getPosition().x < bounds[i].y)
-					{
-						dir[i] *= -1;
-					}
+					animation::effect::move(object, sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ bounds[1], 150.f });
+					std::cout << "dupa1\n";
+				}
+				else if (object->getPosition().x >= bounds[1])
+				{
+					animation::effect::move(object, sf::Vector2f{ -1.f, 0.f }, sf::Vector2f{ bounds[0], 150.f });
+					std::cout << "dupa2\n";
+				}
+				else
+				{
+					std::cout << "dupa posx: " << object->getPosition().x << "\n";
 
-					cloudSprites[i]->move(sf::Vector2f{ dir[i] * 0.5f, 0 });
 				}
 			}
-			}, this);
+			
+		};
+
+		cloudRoutines[1] = [=](const event::MoveEffectFinishedEvent& event) {
+			std::cout << "cloud1 Routine " << event.sender << " " << (sf::Transformable*)&*cloudSprites[1] << "\n";
+			if (event.sender == (sf::Transformable*)&cloudSprites[1])
+			{
+				constexpr float bounds[] = { -900.f, 0.f };
+				auto object = event.sender;
+				if (object->getPosition().x <= bounds[0])
+					animation::effect::move(object, sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ bounds[1], -480.f });
+				else if (object->getPosition().x >= bounds[1])
+					animation::effect::move(object, sf::Vector2f{ -1.f, 0.f }, sf::Vector2f{ bounds[0], -480.f });
+				else
+					std::cout << "dupa\n";
+			}
+		};
+
+		cloudRoutines[2] = [](const event::MoveEffectFinishedEvent& event) {
+			constexpr float bounds[] = { -700.f, 0.f };
+			auto object = event.sender;
+			if (object->getPosition().x <= bounds[0])
+				animation::effect::move(object, sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ bounds[1], -50.f });
+			else if (object->getPosition().x >= bounds[1])
+				animation::effect::move(object, sf::Vector2f{ -1.f, 0.f }, sf::Vector2f{ bounds[0], -50.f });
+		};
+
+		std::cout << "cloud0: " << cloudSprites[0] << '\n';
+		std::cout << "cloud1: " << cloudSprites[1] << '\n';
+
+		event::system::connect<event::MoveEffectFinishedEvent>(cloudRoutines[0], &*cloudSprites[0]);
+		event::system::connect<event::MoveEffectFinishedEvent>(cloudRoutines[1], &*cloudSprites[1]);
+		//event::system::connect<event::MoveEffectFinishedEvent>(cloudRoutines[2], &*cloudSprites[2]);
+		animation::effect::move(&*cloudSprites[0], sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ 200.f, 150.f });
+		animation::effect::move(&*cloudSprites[1], sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ 0.f, -480.f });
+		//animation::effect::move(&*cloudSprites[2], sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ 0.f, -50.f });
+		//event::system::EventQueue<event::MoveEffectFinishedEvent>::push({ &*cloudSprites[0] });
+
+		//animation::effect::move(&*cloudSprites[0], sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ 200.f, 150.f }, []() { std::cout << "dupa\n"; });
+
+		//event::system::connect<event::TimerTimeoutEvent>([this, cloudSprites](const event::TimerTimeoutEvent& e) {
+		//	if (e.sender == &event::timer::Timer::getTimer10ms())
+		//	{
+		//		static int dir[3] = { -1, -1, 1 };
+		//		sf::Vector2f bounds[3] = { {200.f, -400.f}, {0.f, -900.f}, {0.f, -700.f} }; // this implementation force A > B for { A, B }
+
+		//		for (unsigned i = 0; i < 3; ++i)
+		//		{
+		//			if (cloudSprites[i]->getPosition().x > bounds[i].x || cloudSprites[i]->getPosition().x < bounds[i].y)
+		//			{
+		//				dir[i] *= -1;
+		//			}
+
+		//			cloudSprites[i]->move(sf::Vector2f{ dir[i] * 0.5f, 0 });
+		//		}
+		//	}
+		//	}, this);
 
 		return background;
 	}
@@ -66,8 +133,19 @@ namespace bestia {
 		m_font.loadFromFile("Resources/fonts/calibri.ttf");
 		prepareMainSelectionList();
 
+		auto credits = std::make_shared<sf::Text>();
+		credits->setFont(m_font);
+		credits->setPosition({ 0.f, -1000.f });
+		credits->setString(
+			"Credits: \n"
+			"Mlody i Zosia\n\n"
+			"Attrribution: \n"
+			"https://www.gamedeveloperstudio.com\n");
+		credits->setCharacterSize(24);
+
 		auto gui = std::make_shared<scene::GuiLayer>();
 		gui->objects.push_back(m_mainSelectionList);
+		gui->objects.push_back(credits);
 
 		return gui;
 	}
@@ -98,16 +176,22 @@ namespace bestia {
 			[this](const sf::Event& event) { m_gameState = EGameState::InGame; };
 
 		(*m_mainSelectionList)[1].setString("OPTIONS");
+		(*m_mainSelectionList)[1].EventCallSFML<sf::Event::MouseButtonPressed>::eventHandler =
+			[this](const sf::Event& event) {
+			(*m_mainSelectionList)[1].setFillColor(sf::Color{ 10, 20, 180, 0 });
+			(*m_mainSelectionList)[1].setStringColor(sf::Color{ 190, 190, 190, 0 });
+			animation::effect::fadeIn(&(*m_mainSelectionList)[1], 10, 180);
+		};
 
 		(*m_mainSelectionList)[2].setString("HOW TO PLAY");
+		(*m_mainSelectionList)[2].EventCallSFML<sf::Event::MouseButtonPressed>::eventHandler =
+			[this](const sf::Event& event) {
+			animation::effect::fadeOut(&(*m_mainSelectionList)[2], 5, 100);
+		};
 
 		(*m_mainSelectionList)[3].setString("CREDITS");
 		(*m_mainSelectionList)[3].EventCallSFML<sf::Event::MouseButtonPressed>::eventHandler =
-			[this](const sf::Event& event) {
-			event::system::EventQueue<event::ViewMoveEvent>::push({});
-			LOG("Credits: Mlody i Zosia\n" <<
-				"Attrribution: \n" <<
-				"Background photo created by freepik - www.freepik.com\n"); };
+			[this](const sf::Event& event) { moveView({ 0.f, -500.f }, m_view, &(*m_mainSelectionList)[3]); };
 
 		(*m_mainSelectionList)[4].setString("EXIT");
 		(*m_mainSelectionList)[4].EventCallSFML<sf::Event::MouseButtonPressed>::eventHandler =

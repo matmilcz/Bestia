@@ -40,25 +40,25 @@ namespace system {
 	using delegate_bestia_t = std::function<void(const TEvent&)>;
 
 	template <const sf::Event::EventType TEvent>
-	void connect(const delegate_sfml_t& delegate, const EventCaller* caller)
+	void connect(const delegate_sfml_t& delegate, const void* caller)
 	{
 		EventSFMLDispatcher<TEvent>::add(delegate, caller);
 	}
 
 	template <const sf::Event::EventType TEvent>
-	void disconnect(const EventCaller* caller)
+	void disconnect(const void* caller)
 	{
 		EventSFMLDispatcher<TEvent>::remove(caller);
 	}
 
 	template <typename TEvent>
-	void connect(const delegate_bestia_t<TEvent>& delegate, const EventCaller* caller)
+	void connect(const delegate_bestia_t<TEvent>& delegate, const void* caller)
 	{
 		EventBestiaDispatcher<TEvent>::add(delegate, caller);
 	}
 
 	template <typename TEvent>
-	void disconnect(const EventCaller* caller)
+	void disconnect(const void* caller)
 	{
 		EventBestiaDispatcher<TEvent>::remove(caller);
 	}

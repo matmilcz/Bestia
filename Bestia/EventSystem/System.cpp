@@ -31,13 +31,16 @@ namespace system {
 
 	void handleEvents()
 	{
+		// handle sfml events
 		sf::Event event;
 		while (gui::Window::pollEvent(event))
 		{
 			event::system::handleEvent(event);
 		}
 
+		// handle bestia events
 		handleEvent<TimerTimeoutEvent>();
+		handleEvent<MoveEffectFinishedEvent>();
 	}
 
 }}}

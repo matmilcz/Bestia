@@ -1,8 +1,6 @@
 #include "Timer.h"
 #include "Event.h"
 
-bestia::event::timer::Timer g_timer60tpc(15); // 60 ticks per second
-
 namespace bestia {
 namespace event {
 namespace timer {

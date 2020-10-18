@@ -1,14 +1,29 @@
 # pragma once
 
-#include <SFML/Graphics.hpp>
-#include "Defs.h"
+#include <SFML/Window/Window.hpp>
+#include <SFML/Graphics/View.hpp>
+#include "EventSystem/EventCaller.h"
 
 namespace bestia {
 
-    inline void resizeView(const sf::Window& window, sf::View& view)
+    void resizeView(const sf::Window& window, sf::View& view);
+    void moveView(const sf::Vector2f& newCenter, sf::View& view, const event::EventCaller* caller);
+
+    template <typename T>
+    T addSafely(const T& a, const T& b)
     {
-        const float aspectRatio = static_cast<float>(window.getSize().x) / static_cast<float>(window.getSize().y);
-        view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
+        if (std::numeric_limits<T>().max() - a > b)
+            return a + b;
+        else
+            return std::numeric_limits<T>().max();
     }
 
+    template <typename T>
+    T subSafely(const T& a, const T& b)
+    {
+        if (std::numeric_limits<T>().min() + a > b)
+            return a - b;
+        else
+            return std::numeric_limits<T>().min();
+    }
 }

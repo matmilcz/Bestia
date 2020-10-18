@@ -22,6 +22,12 @@ namespace timer {
 		void start();
 		void stop();
 
+		static Timer& getTimer10ms()
+		{
+			static Timer timer(10);
+			return timer;
+		}
+
 	private:
 		std::thread m_timerThread;
 		std::condition_variable m_cv;
