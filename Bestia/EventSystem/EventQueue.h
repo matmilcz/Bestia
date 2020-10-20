@@ -14,6 +14,8 @@ namespace system {
 		static void push(const TEvent& event)
 		{
 			std::lock_guard<std::mutex> lock(get().m_mutex);
+			if (typeid(TEvent) == typeid(event::MoveEffectFinishedEvent))
+				std::cout << "pushing event for " << event.sender << '\n';
 			get().m_queue.push(event);
 		}
 
@@ -34,6 +36,19 @@ namespace system {
 			std::lock_guard<std::mutex> lock(get().m_mutex);
 			return get().m_queue.empty();
 		}
+
+		static void print()
+		{
+			std::lock_guard<std::mutex> lock(get().m_mutex);
+			std::queue<TEvent> q = get().m_queue;
+			std::cout << "event queue: ";
+			while (!q.empty())
+			{
+				std::cout << q.front().sender << " ";
+				q.pop();
+			}
+			std::cout << '\n';
+		};
 
 	private:
 		EventQueue() = default;

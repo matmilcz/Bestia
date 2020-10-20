@@ -71,6 +71,8 @@ namespace system {
 		while (!EventQueue<TEvent>::empty())
 		{
 			EventBestiaDispatcher<TEvent>::dispatch(EventQueue<TEvent>::front());
+			if (typeid(TEvent) == typeid(event::MoveEffectFinishedEvent))
+				std::cout << "pop\n";
 			EventQueue<TEvent>::pop();
 		}
 	}
