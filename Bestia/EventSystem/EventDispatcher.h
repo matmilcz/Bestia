@@ -18,17 +18,24 @@ namespace event {
 
 		void dispatch(const TEvent& event)
 		{
+			//print();
+
 				for (const auto& listener : m_eventListeners)
 				{
 					if (typeid(TEvent) == typeid(MoveEffectFinishedEvent))
 						std::cout << "calling listener for object: " << listener.second << "\n";
+						std::cout << "listener fcn: " << listener.first.target_type().name() << '\n';
 					try
 					{
 						listener.first(event);
 					}
 					catch (const std::bad_function_call&)
 					{
-						LOG("WRN: Dispatcher not called for: 0x" << listener.second << "  Events in queue: " << m_eventListeners.size() << '\n');
+						LOG("WRN: Dispatcher of " << typeid(TEvent).name() << 
+							" cannot call " << listener.first.target_type().name() <<
+							" for: 0x" << std::hex << listener.second << "\n\n");
+
+						print();
 					}
 				}
 		}
@@ -41,6 +48,7 @@ namespace event {
 
 		void remove(const void* caller)
 		{
+			std::cout << "remove listener for object: " << caller << '\n';
 			m_eventListeners.erase(
 				std::remove_if(
 					m_eventListeners.begin(), m_eventListeners.end(),
@@ -52,6 +60,16 @@ namespace event {
 		void reserve(const size_t& capacity)
 		{
 			m_eventListeners.reserve(capacity);
+		}
+
+		void print()
+		{
+			LOG("Printing listeners for " << typeid(TEvent).name() << ":\n");
+			for (const auto& listener : m_eventListeners)
+			{
+				LOG("0x" << std::hex << listener.second << ": " << listener.first.target_type().name() << '\n');
+			}
+			LOG('\n');
 		}
 
 	private:

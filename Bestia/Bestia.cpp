@@ -19,7 +19,8 @@ int main(int argc, char* argv[])
     {
         event::system::handleEvents();
 
-        gui::Window::clear(sf::Color(40, 150, 210, 255));
+        const sf::Color backgroundColor(40, 150, 210, 255);
+        gui::Window::clear(backgroundColor);
 
         switch (gameState)
         {

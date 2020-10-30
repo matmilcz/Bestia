@@ -31,17 +31,20 @@ namespace effect {
 				//std::cout << "timeout posx: " << object->getPosition().x << "  timeout posy: " << object->getPosition().y << '\n';
 				if (o->getPosition() == targetPosition)
 				{
-					std::cout << "event queue before disconnecting " << std::hex << object << "\n";
-					event::system::EventQueue<event::MoveEffectFinishedEvent>::print();
+					/*std::cout << "event queue before disconnecting " << std::hex << object << "\n";
+					event::system::EventQueue<event::MoveEffectFinishedEvent>::print();*/
+					event::EventBestiaDispatcher<event::MoveEffectFinishedEvent>::print();
+					event::system::EventQueue<event::TimerTimeoutEvent>::print();
 					std::cout << "disconnecting " << std::hex << object <<  "\n";
 					//auto o = object;
 					event::system::disconnect<event::TimerTimeoutEvent>(object);
-					event::MoveEffectFinishedEvent e;
+					event::system::EventQueue<event::TimerTimeoutEvent>::print();
+					/*event::MoveEffectFinishedEvent e;
 					e.sender = o;
 					std::cout << e.sender << '\n';
 					event::system::EventQueue<event::MoveEffectFinishedEvent>::push(e);
 					std::cout << "event queue after disconnecting " << std::hex << object << "\n";
-					event::system::EventQueue<event::MoveEffectFinishedEvent>::print();
+					event::system::EventQueue<event::MoveEffectFinishedEvent>::print();*/
 				}
 			}
 			}, object);

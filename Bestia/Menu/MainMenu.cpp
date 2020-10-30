@@ -8,6 +8,8 @@ namespace bestia {
 
 	MainMenu::MainMenu(EGameState& gameState) : m_gameState(gameState)
 	{
+		std::cout << "MainMenu ctor \n";
+		event::system::EventQueue<event::TimerTimeoutEvent>::print();
 		auto background = prepareBackgroundLayer();
 		auto gui = prepareGuiLayer();
 
@@ -26,6 +28,9 @@ namespace bestia {
 		m_cloudTexture.loadFromFile("Resources/spritesheets/clouds.png");
 		constexpr uint numOfClouds = 3;
 
+		std::cout << "MainMenu ctor bg0 \n";
+		event::system::EventQueue<event::TimerTimeoutEvent>::print();
+
 		std::array<std::shared_ptr<sf::Sprite>, numOfClouds> cloudSprites =
 		{
 			std::make_shared<sf::Sprite>(m_cloudTexture, sf::IntRect{ 0, 0, 580, 280 }),
@@ -33,14 +38,23 @@ namespace bestia {
 			std::make_shared<sf::Sprite>(m_cloudTexture, sf::IntRect{ 0, 630, 590, 325 })
 		};
 
+		std::cout << "MainMenu ctor bg1 \n";
+		event::system::EventQueue<event::TimerTimeoutEvent>::print();
+
 		cloudSprites[0]->move(sf::Vector2f{ 100.f, 150.f });
 		cloudSprites[1]->move(sf::Vector2f{ -800.f, -480.f });
 		cloudSprites[2]->move(sf::Vector2f{ -600.f, -50.f });
+
+		std::cout << "MainMenu ctor bg2 \n";
+		event::system::EventQueue<event::TimerTimeoutEvent>::print();
 
 		auto background = std::make_shared<scene::BackgroundLayer>();
 		background->objects.push_back(cloudSprites[2]);
 		background->objects.push_back(cloudSprites[1]);
 		background->objects.push_back(cloudSprites[0]);
+
+		std::cout << "MainMenu ctor bg3 \n";
+		event::system::EventQueue<event::TimerTimeoutEvent>::print();
 
 		std::array<std::function<void(const event::MoveEffectFinishedEvent&)>, numOfClouds> cloudRoutines;
 
