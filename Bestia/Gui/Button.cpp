@@ -5,6 +5,8 @@
 namespace bestia {
 namespace gui {
 
+	sf::Font ButtonNew::m_defaultFont;
+
 	Button::Button()
 	{
 		setFillColor(m_defaultColor);

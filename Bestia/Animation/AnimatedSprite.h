@@ -2,8 +2,8 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <memory>
-#include "EventSystem/System.h"
-#include "EventSystem/Timer.h"
+#include "System/EventSystem/System.h"
+#include "System/EventSystem/Timer.h"
 #include "Animation.h"
 
 namespace bestia {

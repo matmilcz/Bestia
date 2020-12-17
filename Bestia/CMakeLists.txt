@@ -17,25 +17,29 @@ file(GLOB SRCFILES
 	*.cpp 
 	Animation/*.cpp
 	Menu/*.cpp
-	EventSystem/*.cpp
+	System/*.cpp
+	System/EventSystem/*.cpp
 	Brain/*.cpp
 	Utils/*.cpp
 	Gui/*.cpp
 	ExtendedSFML/*.cpp
-	Scene/*.cpp)
+	Scene/*.cpp
+	Scenes/*.cpp)
 
 file(GLOB INCFILES 
 	*.h
 	Animation/*.h
 	Menu/*.h
-	EventSystem/*.h
+	System/*.h
+	System/EventSystem/*.h
 	Brain/*.h
 	Utils/*.h
 	Gui/*.h
 	ExtendedSFML/*.h
-	Scene/*.h)
+	Scene/*.h
+	Scenes/*.h)
 
-add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES} "Utils/CommonFcn.cpp" "Animation/MoveEffect.cpp")
+add_executable (${EXEC_NAME} ${SRCFILES} ${INCFILES})
 target_link_libraries(${EXEC_NAME} sfml-main sfml-graphics sfml-window sfml-audio sfml-system)
 
 target_include_directories(${EXEC_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

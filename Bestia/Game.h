@@ -3,7 +3,7 @@
 #include "Utils/Log.h"
 #include "Animation/Animation.h"
 #include "Animation/AnimatedSprite.h"
-#include "EventSystem/System.h"
+#include "System/EventSystem/System.h"
 #include "Scene/Scene.h"
 
 namespace bestia {

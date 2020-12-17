@@ -6,18 +6,30 @@
 #include "Utils/CommonFcn.h"
 #include "Utils/Defs.h"
 #include "Utils/Log.h"
-#include "EventSystem/System.h"
+#include "System/EventSystem/System.h"
 #include "Scene/Scene.h"
+#include "System/GameObject.h"
+
 
 namespace bestia {
 
-	class MainMenu : public event::EventCaller
+	class MainMenu : public event::EventCaller, public system::GameObject
 	{
 	public:
 		MainMenu(EGameState& gameState);
 		MainMenu(const MainMenu&) = delete;
 		~MainMenu() = default;
 		MainMenu& operator= (const MainMenu&) = delete;
+
+		virtual void update() override
+		{
+			prepareFrame();
+		}
+
+		virtual void start() override
+		{
+			LOG("DUPA\n");
+		}
 
 		void prepareFrame();
 

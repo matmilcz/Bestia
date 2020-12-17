@@ -1,6 +1,6 @@
 #include "CommonFcn.h"
-#include "EventSystem/Timer.h"
-#include "EventSystem/System.h"
+#include "System/EventSystem/Timer.h"
+#include "System/EventSystem/System.h"
 #include "Defs.h"
 #include <cmath>
 
@@ -52,5 +52,21 @@ namespace bestia {
 			}
 			}, s_caller);
     }
+
+	bool isMouseOver(const sf::Shape& shape, const sf::RenderWindow& window)
+	{
+		const auto& mousePixelPos = sf::Mouse::getPosition(window);
+		const auto& mouseCoordPos = window.mapPixelToCoords(mousePixelPos);
+
+		return shape.getGlobalBounds().contains(mouseCoordPos);
+	}
+
+	bool isMouseOver(const sf::Rect<float>& rect, const sf::RenderWindow& window)
+	{
+		const auto& mousePixelPos = sf::Mouse::getPosition(window);
+		const auto& mouseCoordPos = window.mapPixelToCoords(mousePixelPos);
+
+		return rect.contains(mouseCoordPos);
+	}
 
 }

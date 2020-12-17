@@ -41,6 +41,7 @@ namespace system {
 		// handle bestia events
 		handleEvent<TimerTimeoutEvent>();
 		handleEvent<MoveEffectFinishedEvent>();
+		handleEvent<DummyEvent>();
 	}
 
 }}}

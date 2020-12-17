@@ -1,9 +1,27 @@
 #pragma once
 
 #include "Layers.h"
+#include <array>
 
 namespace bestia {
 namespace scene {
+
+	class SceneNew : public sf::Drawable
+	{
+	protected:
+		std::array<std::shared_ptr<Layer>, ELayer::NUM_OF_LAYERS> layers;
+
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+		{
+			for (auto& layer : layers)
+			{
+				if (layer != nullptr)
+				{
+					gui::Window::draw(*layer);
+				}
+			}
+		}
+	};
 
 	class Scene : public sf::Drawable
 	{

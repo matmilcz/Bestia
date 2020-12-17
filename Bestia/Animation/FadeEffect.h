@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Config.hpp>
-#include "EventSystem/EventCaller.h"
+#include "System/EventSystem/EventCaller.h"
 
 namespace bestia {
 namespace animation {

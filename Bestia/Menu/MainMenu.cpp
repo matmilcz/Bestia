@@ -3,15 +3,16 @@
 #include <array>
 #include "Animation/FadeEffect.h"
 #include "Animation/MoveEffect.h"
+#include "System/Time.h"
 
 namespace bestia {
 
 	MainMenu::MainMenu(EGameState& gameState) : m_gameState(gameState)
 	{
-		auto background = prepareBackgroundLayer();
+		//auto background = prepareBackgroundLayer();
 		auto gui = prepareGuiLayer();
 
-		m_scene.background = background;
+		//m_scene.background = background;
 		m_scene.gui = gui;
 	}
 
@@ -42,35 +43,39 @@ namespace bestia {
 		background->objects.push_back(cloudSprites[1]);
 		background->objects.push_back(cloudSprites[0]);
 
-		std::array<std::function<void(const event::MoveEffectFinishedEvent&)>, numOfClouds> cloudRoutines;
+		std::array<std::function<void(const event::DummyEvent&)>, numOfClouds> cloudRoutines;
 
-		cloudRoutines[0] = [=](const event::MoveEffectFinishedEvent& event) {
-			std::cout << "cloudRoutine0 sender:" << event.sender << " sprite0: " << (sf::Transformable*)&*cloudSprites[0] << "\n";
-			const auto object = event.sender;
-			if (object == (sf::Transformable*)&*cloudSprites[0])
-			{
-				constexpr float bounds[] = { -400.f, 200.f };
-				
-				if (object->getPosition().x <= bounds[0])
-				{
-					animation::effect::move(object, sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ bounds[1], 150.f });
-					std::cout << "dupa1 " << object << "\n";
-				}
-				else if (object->getPosition().x >= bounds[1])
-				{
-					animation::effect::move(object, sf::Vector2f{ -1.f, 0.f }, sf::Vector2f{ bounds[0], 150.f });
-					std::cout << "dupa2 " << object << "\n";
-				}
-				else
-				{
-					std::cout << "dupa posx: " << object->getPosition().x << "\n";
+		cloudRoutines[0] = [=](const event::DummyEvent& event) {
+			//std::cout << "cloudRoutine0 sender:\n";// << event.sender << " sprite0: " << (sf::Transformable*) & *cloudSprites[0] << "\n";
+			//const auto object = event.sender;
+			//cloudSprites[0]->move(sf::Vector2f{ -400.f * time::getDeltaTime().asSeconds(), 200.f * time::getDeltaTime().asSeconds() });
+			event::system::EventQueue<event::DummyEvent>::push({});
 
-				}
-			}
+			//if (object == (sf::Transformable*)&*cloudSprites[0])
+			//{
+			//	constexpr float bounds[] = { -400.f, 200.f };
+			//	
+			//	if (object->getPosition().x <= bounds[0])
+			//	{
+			//		//animation::effect::move(object, sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ bounds[1], 150.f });
+			//		std::cout << "dupa1 " << object << "\n";
+			//	}
+			//	else if (object->getPosition().x >= bounds[1])
+			//	{
+			//		object->move(sf::Vector2f{ 400.f * time::getDeltaTime().asMicroseconds(), 200.f * time::getDeltaTime().asMicroseconds() });
+			//		//animation::effect::move(object, sf::Vector2f{ -1.f, 0.f }, sf::Vector2f{ bounds[0], 150.f });
+			//		std::cout << "dupa2 " << object << "\n";
+			//	}
+			//	else
+			//	{
+			//		std::cout << "dupa posx: " << object->getPosition().x << "\n";
+
+			//	}
+			//}
 			
 		};
 
-		cloudRoutines[1] = [=](const event::MoveEffectFinishedEvent& event) {
+		/*cloudRoutines[1] = [=](const event::MoveEffectFinishedEvent& event) {
 			std::cout << "cloudRoutine1 sender:" << event.sender << " sprite1:" << (sf::Transformable*)&*cloudSprites[1] << "\n";
 			auto object = event.sender;
 			if (object == (sf::Transformable*)&cloudSprites[1])
@@ -92,18 +97,20 @@ namespace bestia {
 				animation::effect::move(object, sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ bounds[1], -50.f });
 			else if (object->getPosition().x >= bounds[1])
 				animation::effect::move(object, sf::Vector2f{ -1.f, 0.f }, sf::Vector2f{ bounds[0], -50.f });
-		};
+		};*/
 
 		std::cout << "cloud0: " << (sf::Transformable*)&*cloudSprites[0] << '\n';
 		std::cout << "cloud1: " << (sf::Transformable*)&*cloudSprites[1] << '\n';
 
 		std::cout << "connecting MoveEffectFinishedEvent...\n";
-		event::system::connect<event::MoveEffectFinishedEvent>(cloudRoutines[0], (sf::Transformable*) &*cloudSprites[0]);
-		event::system::connect<event::MoveEffectFinishedEvent>(cloudRoutines[1], (sf::Transformable*) &*cloudSprites[1]);
+		//event::system::connect<event::MoveEffectFinishedEvent>(cloudRoutines[0], (sf::Transformable*) &*cloudSprites[0]);
+		event::system::connect<event::DummyEvent>(cloudRoutines[0], (sf::Transformable*) &*cloudSprites[0]);
+		//event::system::connect<event::MoveEffectFinishedEvent>(cloudRoutines[1], (sf::Transformable*) &*cloudSprites[1]);
 		std::cout << "finished connecting\n";
+		event::system::EventQueue<event::DummyEvent>::push({});
 		//event::system::connect<event::MoveEffectFinishedEvent>(cloudRoutines[2], &*cloudSprites[2]);
-		animation::effect::move(&*cloudSprites[0], sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ 200.f, 150.f });
-		animation::effect::move(&*cloudSprites[1], sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ 0.f, -480.f });
+		//animation::effect::move(&*cloudSprites[0], sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ 200.f, 150.f });
+		//animation::effect::move(&*cloudSprites[1], sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ 0.f, -480.f });
 		//animation::effect::move(&*cloudSprites[2], sf::Vector2f{ 1.f, 0.f }, sf::Vector2f{ 0.f, -50.f });
 		//event::system::EventQueue<event::MoveEffectFinishedEvent>::push({ &*cloudSprites[0] });
 

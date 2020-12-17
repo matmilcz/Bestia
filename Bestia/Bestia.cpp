@@ -1,27 +1,35 @@
 ﻿#include <memory>
 #include "Menu/MainMenu.h"
 #include "Game.h"
-#include "EventSystem/Timer.h"
+#include "System/EventSystem/Timer.h"
+#include "System/Time.h"
+#include "System/GameManager.h"
 
 int main(int argc, char* argv[])
 {
     using namespace bestia;
 
-    EGameState gameState = EGameState::InMenu;
+    auto& gameManager = system::GameManager::getInstance();
+
+    //EGameState gameState = EGameState::InMenu;
 
     sf::Clock frameClock;
+    auto t = bestia::time::restart();
     event::timer::Timer::getTimer10ms().start();
 
-    std::unique_ptr<MainMenu> mainMenu;
-    std::unique_ptr<Game> game;
+    /*std::unique_ptr<MainMenu> mainMenu;
+    std::unique_ptr<Game> game;*/
 
     while (gui::Window::isOpen())
     {
+        bestia::time::restart();
         event::system::handleEvents();
 
         gui::Window::clear(sf::Color(40, 150, 210, 255));
 
-        switch (gameState)
+        gameManager.update();
+
+        /*switch (gameState)
         {
         case EGameState::InMenu:
             if (game != nullptr)
@@ -47,7 +55,7 @@ int main(int argc, char* argv[])
             }
             game->prepareFrame();
             break;
-        }
+        }*/
 
         gui::Window::display();
     }

@@ -1,6 +1,6 @@
 #include "FadeEffect.h"
-#include "EventSystem/System.h"
-#include "EventSystem/Timer.h"
+#include "System/EventSystem/System.h"
+#include "System/EventSystem/Timer.h"
 
 namespace bestia {
 namespace animation {

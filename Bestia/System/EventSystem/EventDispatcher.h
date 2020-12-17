@@ -20,8 +20,8 @@ namespace event {
 		{
 				for (const auto& listener : m_eventListeners)
 				{
-					if (typeid(TEvent) == typeid(MoveEffectFinishedEvent))
-						std::cout << "calling listener for object: " << listener.second << "\n";
+					/*if (typeid(TEvent) == typeid(MoveEffectFinishedEvent))
+						std::cout << "calling listener for object: " << listener.second << "\n";*/
 					try
 					{
 						listener.first(event);
